@@ -18,7 +18,7 @@ public class ValidationAdmin<T> {
             Claim userId = jwt.getClaim("userId");
             if (!isAdmin.asBoolean()) {
                 if (!userId.isMissing()) {
-                    throw new ForbiddenAccessException(userId.asString());
+                    throw new ForbiddenAccessException(userId.asLong().toString());
                 }
                 throw new ForbiddenAccessException();
             }

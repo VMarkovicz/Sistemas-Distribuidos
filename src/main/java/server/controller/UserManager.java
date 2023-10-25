@@ -26,7 +26,7 @@ public class UserManager {
         if (!user.getSenha().equals(login.senha())) {
             throw new UnauthorizedAccessException();
         }
-        return JWTManager.codifyJWT(user.getIsAdmin(), user.getId());
+        return JWTManager.codifyJWT(user.getTipo(), user.getRegistro());
     }
 
     public UserDTO createUser(CreateUserDTO user) throws ServerReplyException {

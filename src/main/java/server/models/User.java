@@ -19,7 +19,7 @@ import server.dataTransferObject.CreateUserDTO;
 @ToString
 @AllArgsConstructor
 public class User {
-    @NotNull @Id @GeneratedValue private Long id;
+    @NotNull @Id @GeneratedValue private Long registro;
 
     @NotNull @Size(min = 3, max = 255) private String nome;
 
@@ -28,7 +28,7 @@ public class User {
 
     @NotNull private String senha;
 
-    @NotNull private Boolean isAdmin;
+    @NotNull private Boolean tipo;
 
     public User() {
     }
@@ -37,7 +37,7 @@ public class User {
         var entity = new User();
         entity.setEmail(user.email());
         entity.setSenha(user.senha());
-        entity.setIsAdmin(user.tipo());
+        entity.setTipo(user.tipo());
         entity.setNome(user.nome());
         return entity;
     }
