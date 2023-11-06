@@ -6,8 +6,8 @@ import jakarta.validation.constraints.NotNull;
 public record LogoutReply(@NotNull @Valid Payload payload) implements Reply<LogoutReply.Payload>{
 
     public LogoutReply(){
-        this(new Payload("disconnected"));
+        this(new Payload("desconectado."));
     }
-    public record Payload(String message) {
+    public record Payload(String mensagem) {
     }
 }

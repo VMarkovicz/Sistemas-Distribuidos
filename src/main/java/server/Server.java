@@ -88,7 +88,7 @@ public class Server extends Thread {
             ){
             String inputLine;
             while ((inputLine = in.readLine()) != null) {
-                System.out.println("Received: " + inputLine);
+                System.out.println("Received from "+ clientSocket.getInetAddress() +": " + inputLine);
 
                 Reply<?> reply;
 
@@ -99,7 +99,7 @@ public class Server extends Thread {
                 }
 
                 String jsonResponse = GoogleJson.codify(reply);
-                System.out.println("Sent: " + jsonResponse);
+                System.out.println("Sent to "+ clientSocket.getInetAddress() +": " + jsonResponse);
                 out.println(jsonResponse);
                 if(!clientSocket.isConnected() || clientSocket.isClosed()) {
                     break;

@@ -14,13 +14,11 @@ public class CreateUser extends MethodTemplate{
     public Reply<?> startService(String jsonString) throws ServerReplyException {
 
         var requisition = buildRequest(jsonString, CreateUserReq.class);
-        var token = requisition.getHeader().token();
-        ValidationToken.validateToken(token);
         var data = requisition.getPayload();
         var user = UserManager.getInstance().createUser(CreateUserDTO.builder().nome(data.nome())
                                                                                 .email(data.email())
                                                                                 .senha(data.senha())
-                                                                                .tipo(data.tipo())
+                                                                                .tipo(false)
                                                                                 .build());
 
         return new CreateUserReply(user);

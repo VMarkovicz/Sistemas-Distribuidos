@@ -11,9 +11,9 @@ import lombok.Getter;
 public class AdminCreateUserReq extends Requisition<AdminCreateUserReq.Payload>{
     @NotNull(message = "Payload cannot be null") @Valid private final Payload payload;
     public AdminCreateUserReq(final String token, final String nome, final String email,
-                              final String senha, final Boolean tipo) {
+                              final String senha) {
         super(new Header(RequisitionOp.ADMIN_CADASTRAR_USUARIO, token));
-        payload = new Payload(nome, email, senha, tipo);
+        payload = new Payload(nome, email, senha, true);
     }
 
     public record Payload(

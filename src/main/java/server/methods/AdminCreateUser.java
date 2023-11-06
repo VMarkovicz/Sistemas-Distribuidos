@@ -22,7 +22,7 @@ public class AdminCreateUser extends MethodTemplate{
         var user = UserManager.getInstance().createUser(CreateUserDTO.builder().nome(data.nome())
                                                                                 .email(data.email())
                                                                                 .senha(data.senha())
-                                                                                .tipo(data.tipo())
+                                                                                .tipo(true)
                                                                                 .build());
 
         return new AdminCreateUserReply(user);
