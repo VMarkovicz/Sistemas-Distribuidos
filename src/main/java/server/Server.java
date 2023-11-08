@@ -7,10 +7,7 @@ import protocols.requisitions.RequisitionOp;
 import server.controller.UserManager;
 import server.dataTransferObject.CreateUserDTO;
 import server.exception.ServerReplyException;
-import server.methods.AdminCreateUser;
-import server.methods.CreateUser;
-import server.methods.Login;
-import server.methods.Logout;
+import server.methods.*;
 import server.routeController.RouteController;
 
 import java.net.*;
@@ -27,26 +24,7 @@ public class Server extends Thread {
         BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
         System.out.print("Port: ");
         final int port = Integer.parseInt(stdIn.readLine());
-        //ServerSocket serverSocket = null;
 
-//        try {
-//            serverSocket = new ServerSocket(port);
-//            System.out.println ("Connection Socket Created");
-//            try {
-//                while (true) {
-//                    System.out.println ("Waiting for Connection");
-//                    new Server (serverSocket.accept());
-//                }
-//            }
-//            catch (IOException e) {
-//                System.err.println("Accept failed.");
-//                System.exit(1);
-//            }
-//        }
-//        catch (IOException e) {
-//            System.err.println("Could not listen on port");
-//            System.exit(1);
-//        }
         InetAddress ipAddress = InetAddress.getByName("0.0.0.0");
         try(ServerSocket serverSocket = new ServerSocket(port, 0, ipAddress)) {
             System.out.println("Connection Socket Created");
@@ -73,6 +51,13 @@ public class Server extends Thread {
                     .addRoute(RequisitionOp.LOGOUT, new Logout())
                     .addRoute(RequisitionOp.ADMIN_CADASTRAR_USUARIO, new AdminCreateUser())
                     .addRoute(RequisitionOp.CADASTRAR_USUARIO, new CreateUser())
+                    .addRoute(RequisitionOp.ADMIN_DELETAR_USUARIO, new AdminDeleteUser())
+                    .addRoute(RequisitionOp.DELETAR_USUARIO, new DeleteUser())
+                    .addRoute(RequisitionOp.BUSCAR_USUARIO, new FindUser())
+                    .addRoute(RequisitionOp.ADMIN_BUSCAR_USUARIOS, new AdminFindUsers())
+                    .addRoute(RequisitionOp.ADMIN_BUSCAR_USUARIO, new AdminFindUser())
+                    .addRoute(RequisitionOp.ATUALIZAR_USUARIO, new UpdateUser())
+                    .addRoute(RequisitionOp.ADMIN_ATUALIZAR_USUARIO, new AdminUpdateUser())
                     .build();
         }
         start();

@@ -11,6 +11,7 @@ import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.annotations.NaturalId;
 import server.dataTransferObject.CreateUserDTO;
+import server.dataTransferObject.UpdateUserDTO;
 
 @Entity
 @Table(name = "users")
@@ -40,5 +41,28 @@ public class User {
         entity.setTipo(user.tipo());
         entity.setNome(user.nome());
         return entity;
+    }
+    public static User of(UpdateUserDTO user) {
+        var entity = new User();
+        entity.setRegistro(user.registro());
+        entity.setNome(user.nome());
+        entity.setEmail(user.email());
+        entity.setSenha(user.senha());
+        entity.setTipo(user.tipo());
+        return entity;
+    }
+    public void update(User info) {
+        if (info.getNome() != null) {
+            setNome(info.getNome());
+        }
+        if (info.getEmail() != null) {
+            setEmail(info.getEmail());
+        }
+        if (info.getSenha() != null) {
+            setSenha(info.getSenha());
+        }
+        if (info.getTipo() != null) {
+            setTipo(info.getTipo());
+        }
     }
 }

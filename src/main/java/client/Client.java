@@ -7,7 +7,6 @@ import gson.ValidationGson;
 import protocols.Optional;
 import protocols.reply.*;
 import protocols.requisitions.*;
-
 import java.io.*;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -102,6 +101,27 @@ public class Client {
                 case RequisitionOp.CADASTRAR_USUARIO -> {
                     return makeReq(stdin, token, CreateUserReq.class);
                 }
+                case RequisitionOp.ADMIN_DELETAR_USUARIO -> {
+                    return makeReq(stdin, token, AdminDeleteUserReq.class);
+                }
+                case RequisitionOp.DELETAR_USUARIO -> {
+                    return makeReq(stdin, token, DeleteUserReq.class);
+                }
+                case RequisitionOp.BUSCAR_USUARIO -> {
+                    return makeReq(stdin, token, FindUserReq.class);
+                }
+                case RequisitionOp.ADMIN_BUSCAR_USUARIOS -> {
+                    return makeReq(stdin, token, AdminFindUsersReq.class);
+                }
+                case RequisitionOp.ADMIN_BUSCAR_USUARIO -> {
+                    return makeReq(stdin, token, AdminFindUserReq.class);
+                }
+                case RequisitionOp.ADMIN_ATUALIZAR_USUARIO -> {
+                    return makeReq(stdin, token, AdminUpdateUserReq.class);
+                }
+                case RequisitionOp.ATUALIZAR_USUARIO -> {
+                    return makeReq(stdin, token, UpdateUserReq.class);
+                }
             }
         }
     }
@@ -172,6 +192,27 @@ public class Client {
             }
             if (objectClass == CreateUserReq.class) {
                 reply = GoogleJson.decode(json, CreateUserReply.class);
+            }
+            if (objectClass == AdminDeleteUserReq.class) {
+                reply = GoogleJson.decode(json, AdminDeleteUserReply.class);
+            }
+            if (objectClass == DeleteUserReq.class) {
+                reply = GoogleJson.decode(json, DeleteUserReply.class);
+            }
+            if (objectClass == FindUserReq.class) {
+                reply = GoogleJson.decode(json, FindUserReply.class);
+            }
+            if (objectClass == AdminFindUsersReq.class) {
+                reply = GoogleJson.decode(json, AdminFindUsersReply.class);
+            }
+            if (objectClass == AdminFindUserReq.class) {
+                reply = GoogleJson.decode(json, FindUserReply.class);
+            }
+            if (objectClass == AdminUpdateUserReq.class) {
+                reply = GoogleJson.decode(json, AdminUpdateUserReply.class);
+            }
+            if (objectClass == UpdateUserReq.class) {
+                reply = GoogleJson.decode(json, UpdateUserReply.class);
             }
             if (reply == null || reply.payload() == null) {
                 reply = GoogleJson.decode(json, ErrorReply.class);

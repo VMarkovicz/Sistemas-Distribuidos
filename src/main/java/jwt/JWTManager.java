@@ -23,4 +23,16 @@ public class JWTManager {
     public static DecodedJWT decodeToken(String token) {
         return JWT.decode(token);
     }
+
+    public static Long getRegistro(String token) throws JWTVerificationException {
+        DecodedJWT jwt = JWT.decode(token);
+        Claim userId = jwt.getClaim("userId");
+        return userId.asLong();
+    }
+
+    public static boolean getTipo(String token) {
+        DecodedJWT jwt = JWT.decode(token);
+        Claim isAdmin = jwt.getClaim("isAdmin");
+        return isAdmin.asBoolean();
+    }
 }

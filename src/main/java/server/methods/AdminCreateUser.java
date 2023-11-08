@@ -11,7 +11,6 @@ import server.methods.validation.ValidationAdmin;
 import server.methods.validation.ValidationToken;
 
 public class AdminCreateUser extends MethodTemplate{
-
     public Reply<?> startService(String jsonString) throws ServerReplyException {
 
         var requisition = buildRequest(jsonString, AdminCreateUserReq.class);
