@@ -1,5 +1,6 @@
 package server.methods;
 
+import jwt.JWTManager;
 import protocols.reply.AdminUpdateUserReply;
 import protocols.reply.Reply;
 import protocols.requisitions.AdminUpdateUserReq;
@@ -17,6 +18,7 @@ public class AdminUpdateUser extends MethodTemplate{
         ValidationAdmin.validateAdmin(token);
         var data = requisition.getPayload();
         var user = UserManager.getInstance().updateUser(UpdateUserDTO.builder()
+                .sender(JWTManager.getRegistro(token))
                 .registro(data.registro())
                 .nome(data.nome())
                 .email(data.email())

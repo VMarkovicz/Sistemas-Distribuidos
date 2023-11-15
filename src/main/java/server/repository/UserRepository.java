@@ -54,9 +54,7 @@ public class UserRepository implements Repository{
     }
     public boolean tryDelete(Long registro) {
         try (var session = sessionFactory.openSession()) {
-            long numberOfAdmins = session.createSelectionQuery("select count(*) from User user where user.tipo = :tipo", Long.class)
-                    .setParameter("tipo", true)
-                    .uniqueResult();
+            Long numberOfAdmins = countAdmins();
             if (numberOfAdmins <= 1) {
                 return false;
             }
@@ -107,6 +105,14 @@ public class UserRepository implements Repository{
                 throw new BadReqException("usuario com email " + user.getEmail() + " ja existe");
             }
             return user;
+        }
+    }
+
+    public Long countAdmins(){
+        try (var session = sessionFactory.openSession()) {
+            return session.createSelectionQuery("select count(*) from User user where user.tipo = :tipo", Long.class)
+                    .setParameter("tipo", true)
+                    .uniqueResult();
         }
     }
 }

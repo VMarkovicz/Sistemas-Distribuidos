@@ -23,7 +23,9 @@ public class AdminDeleteUser extends MethodTemplate{
                         .registroDelecao(data.registro())
                         .tipo(JWTManager.getTipo(requisition.getHeader().token()))
                         .build();
-        UserManager.getInstance().deleteUser(user);
-        return new AdminDeleteUserReply();
+        var controller = UserManager.getInstance();
+        controller.findUser(data.registro());
+        controller.deleteUser(user);
+        return new AdminDeleteUserReply(data.registro());
     }
 }

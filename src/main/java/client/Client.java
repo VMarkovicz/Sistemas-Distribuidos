@@ -157,8 +157,8 @@ public class Client {
                 String line = stdin.readLine();
                 if (line.isBlank() || line.isEmpty()) {
                     constructorArguments[i] = null;
-                } else if (parameters[i].getType() == Integer.class) {
-                    constructorArguments[i] = Integer.parseInt(line);
+                } else if (parameters[i].getType() == Long.class) {
+                    constructorArguments[i] = Long.parseLong(line);
                 } else if (parameters[i].getType() == Boolean.class) {
 
                     constructorArguments[i] = Boolean.parseBoolean(line);

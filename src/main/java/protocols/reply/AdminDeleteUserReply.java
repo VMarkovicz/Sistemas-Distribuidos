@@ -1,9 +1,12 @@
 package protocols.reply;
 
-import protocols.EmptyPayload;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 
-public record AdminDeleteUserReply (EmptyPayload payload) implements Reply<EmptyPayload> {
-    public AdminDeleteUserReply() {
-        this(new EmptyPayload());
+public record AdminDeleteUserReply (@NotNull @Valid Payload payload) implements Reply<AdminDeleteUserReply.Payload> {
+    public AdminDeleteUserReply(Long registro) {
+        this(new AdminDeleteUserReply.Payload("User deleted with sucess: " + registro));
+    }
+    public record Payload(String mensagem) {
     }
 }

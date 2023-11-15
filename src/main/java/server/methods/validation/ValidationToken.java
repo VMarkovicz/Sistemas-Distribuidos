@@ -5,6 +5,8 @@ import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import jwt.JWTManager;
 import protocols.requisitions.Requisition;
+import server.controller.UserManager;
+import server.exception.NotFoundException;
 import server.exception.ServerReplyException;
 import server.exception.UnauthorizedAccessException;
 
@@ -25,6 +27,12 @@ public class ValidationToken {
         Claim isAdmin = jwt.getClaim("isAdmin");
         if (userId.isMissing() || userId.isNull() || isAdmin.isMissing() || isAdmin.isNull()) {
             throw new UnauthorizedAccessException();
+        }
+        try {
+            UserManager.getInstance().findUser(JWTManager.getRegistro(token));
+        }
+        catch (NotFoundException e){
+            throw new NotFoundException("User does not exists");
         }
     }
 

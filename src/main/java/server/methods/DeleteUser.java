@@ -23,7 +23,8 @@ public class DeleteUser extends MethodTemplate{
                 .email(data.email())
                 .senha(data.senha())
                 .build();
+        UserManager.getInstance().deleteUserAuthentication(user);
         UserManager.getInstance().deleteUser(user);
-        return new DeleteUserReply();
+        return new DeleteUserReply(JWTManager.getRegistro(requisition.getHeader().token()));
     }
 }

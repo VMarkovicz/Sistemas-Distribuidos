@@ -6,14 +6,12 @@ import server.dataTransferObject.CreateUserDTO;
 import server.dataTransferObject.DeleteUserDTO;
 import server.dataTransferObject.UpdateUserDTO;
 import server.dataTransferObject.UserDTO;
-import server.exception.BadReqException;
-import server.exception.NotFoundException;
-import server.exception.ServerReplyException;
-import server.exception.UnauthorizedAccessException;
+import server.exception.*;
 import server.models.User;
 import server.repository.UserRepository;
 
 import java.util.List;
+import java.util.Objects;
 
 public class UserManager {
     private static UserManager instance = null;
@@ -43,10 +41,20 @@ public class UserManager {
     public void deleteUser(DeleteUserDTO user) throws ServerReplyException{
         if (user.tipo() && user.sender().equals(user.registroDelecao())) {
             if (!repository.tryDelete(user.registroDelecao())) {
-                throw new BadReqException("bomdia");
+                throw new UnauthorizedAccessException("You are not allowed to remove admin users when there is only one.");
             }
         } else {
             repository.deleteById(user.registroDelecao());
+        }
+    }
+
+    public void deleteUserAuthentication(DeleteUserDTO deleteData) throws UnauthorizedAccessException {
+        var user = repository.find(deleteData.registroDelecao()).orElseThrow(UnauthorizedAccessException::new);
+        if (!user.getEmail().equals(deleteData.email())) {
+            throw new UnauthorizedAccessException();
+        }
+        if (!user.getSenha().equals(deleteData.senha())){
+            throw new UnauthorizedAccessException();
         }
     }
     public UserDTO findUser(long id) throws NotFoundException {
@@ -62,6 +70,11 @@ public class UserManager {
                 .toList();
     }
     public UserDTO updateUser(UpdateUserDTO user) throws ServerReplyException {
+        if (Objects.equals(user.registro(), user.sender()) && !user.tipo()){
+            if (repository.countAdmins() == 1){
+                throw new BadReqException("Last admin could not change his type");
+            }
+        }
         var entity = repository.update(user.registro(), User.of(user));
         return UserDTO.of(entity);
     }

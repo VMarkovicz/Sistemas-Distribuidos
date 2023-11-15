@@ -13,6 +13,7 @@ public class LoginReq extends Requisition<LoginReq.Payload>{
 
     public LoginReq(final String email, final String senha){
         super(new Header(RequisitionOp.LOGIN, null));
+        //payload = new Payload("admin@admin", "admin");
         payload = new Payload(email, senha);
     }
     public record Payload(

@@ -1,5 +1,6 @@
 package server.methods;
 
+import jwt.JWTManager;
 import protocols.reply.Reply;
 import protocols.reply.UpdateUserReply;
 import protocols.requisitions.UpdateUserReq;
@@ -15,11 +16,11 @@ public class UpdateUser extends MethodTemplate{
         ValidationToken.validateToken(token);
         var data = requisition.getPayload();
         var user = UserManager.getInstance().updateUser(UpdateUserDTO.builder()
-                                                                        .registro(data.registro())
+                                                                        .registro(JWTManager.getRegistro(token))
                                                                         .nome(data.nome())
                                                                         .email(data.email())
                                                                         .senha(data.senha())
-                                                                        .tipo(data.tipo())
+                                                                        .tipo(JWTManager.getTipo(token))
                                                                         .build());
         return new UpdateUserReply(user);
     }

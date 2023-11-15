@@ -2,11 +2,11 @@ package server.exception;
 
 public class BadReqException extends ServerReplyException {
 
-    public BadReqException(final String message) {
-        super(400, message);
+    public BadReqException(final String mensagem) {
+        super(400, mensagem);
     }
 
-    public BadReqException(int code, final String message) {
-        super(code, message);
+    public BadReqException(int code, final String mensagem) {
+        super(code, mensagem);
     }
 }
