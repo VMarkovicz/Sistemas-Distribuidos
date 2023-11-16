@@ -70,7 +70,7 @@ public class UserManager {
                 .toList();
     }
     public UserDTO updateUser(UpdateUserDTO user) throws ServerReplyException {
-        if (Objects.equals(user.registro(), user.sender()) && !user.tipo()){
+        if (Objects.equals(user.registro(), user.sender()) && user.tipo() != null && !user.tipo()){
             if (repository.countAdmins() == 1){
                 throw new BadReqException("Last admin could not change his type");
             }
