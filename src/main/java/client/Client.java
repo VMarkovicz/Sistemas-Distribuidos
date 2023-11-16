@@ -1,5 +1,6 @@
 package client;
 
+import client.clientInterfaces.SocketConnection;
 import com.google.gson.JsonSyntaxException;
 import gson.Error;
 import gson.GoogleJson;
@@ -15,11 +16,14 @@ import java.net.*;
 
 public class Client {
     public static void main(String[] args) throws IOException {
-        BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
-        System.out.print("IP: ");
-        String IPServer = stdIn.readLine();
-        System.out.print("Port: ");
-        int port = Integer.parseInt(stdIn.readLine());
+//        BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
+//        System.out.print("IP: ");
+//        String IPServer = stdIn.readLine();
+//        System.out.print("Port: ");
+//        int port = Integer.parseInt(stdIn.readLine());
+        SocketConnection SocketConnInterface = new SocketConnection(null);
+        String IPServer = SocketConnInterface.getIpServer();
+        int port = SocketConnInterface.getPort();
 
         try (Socket echoSocket = new Socket(IPServer, port);
              PrintWriter out = new PrintWriter(echoSocket.getOutputStream(), true);
