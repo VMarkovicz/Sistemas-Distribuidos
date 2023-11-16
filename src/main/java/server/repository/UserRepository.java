@@ -81,8 +81,7 @@ public class UserRepository implements Repository{
 
             User user = session.byId(User.class)
                     .loadOptional(id)
-                    .orElseThrow(() -> new NotFoundException("Usuario com id: " + id + " não existe"));
-
+                    .orElseThrow(() -> new NotFoundException("User with id: " + id + " does not exists"));
 
             var userWithEmail = session.bySimpleNaturalId(User.class)
                     .loadOptional(instance.getEmail());
@@ -102,12 +101,11 @@ public class UserRepository implements Repository{
                 if (tx != null) {
                     tx.rollback();
                 }
-                throw new BadReqException("usuario com email " + user.getEmail() + " ja existe");
+                throw new BadReqException("User with email " + user.getEmail() + " already exists");
             }
             return user;
         }
     }
-
     public Long countAdmins(){
         try (var session = sessionFactory.openSession()) {
             return session.createSelectionQuery("select count(*) from User user where user.tipo = :tipo", Long.class)
