@@ -1,16 +1,17 @@
 package client;
 
 import client.clientInterfaces.OperationSelect;
+import client.clientInterfaces.ReplyInterface;
 import client.clientInterfaces.SocketConnection;
 import client.clientInterfaces.operationInterfaces.*;
 import com.google.gson.JsonSyntaxException;
 import gson.Error;
 import gson.GoogleJson;
 import gson.ValidationGson;
-import jwt.JWTManager;
 import protocols.Optional;
 import protocols.reply.*;
 import protocols.requisitions.*;
+
 import java.io.*;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -24,6 +25,7 @@ public class Client {
 //        String IPServer = stdIn.readLine();
 //        System.out.print("Port: ");
 //        int port = Integer.parseInt(stdIn.readLine());
+
         SocketConnection SocketConnInterface = new SocketConnection(null);
         String IPServer = SocketConnInterface.getIpServer();
         int port = SocketConnInterface.getPort();
@@ -206,39 +208,101 @@ public class Client {
             Class<?> objectClass = requisition.getClass();
             if (objectClass == LoginReq.class) {
                 reply = GoogleJson.decode(json, LoginReply.class);
+                if(reply != null && reply.payload() != null){
+                    ReplyInterface ReplyInterface = new ReplyInterface(null, "Logged in with success.");
+                }
             }
             if (objectClass == LogoutReq.class) {
                 reply = GoogleJson.decode(json, LogoutReply.class);
+                if(reply != null && reply.payload() != null) {
+                    ReplyInterface ReplyInterface = new ReplyInterface(null, "Disconnected with success.");
+                }
             }
             if (objectClass == AdminCreateUserReq.class) {
                 reply = GoogleJson.decode(json, AdminCreateUserReply.class);
+                AdminCreateUserReply objReply = (AdminCreateUserReply) reply;
+                if(reply != null && reply.payload() != null){
+                    ReplyInterface ReplyInterface = new ReplyInterface(null, "User Created:" + "\nName: " + objReply.payload().nome()
+                                                                                                                + "\nEmail: " + objReply.payload().email()
+                                                                                                                + "\nID: " + objReply.payload().registro()
+                                                                                                                + "\nType: " + objReply.payload().tipo());
+                }
             }
             if (objectClass == CreateUserReq.class) {
                 reply = GoogleJson.decode(json, CreateUserReply.class);
+                CreateUserReply objReply = (CreateUserReply) reply;
+                if(reply != null && reply.payload() != null){
+                    ReplyInterface ReplyInterface = new ReplyInterface(null, "User Created:" + "\nName: " + objReply.payload().nome()
+                                                                                                                + "\nEmail: " + objReply.payload().email()
+                                                                                                                + "\nID: " + objReply.payload().registro()
+                                                                                                                + "\nType: " + objReply.payload().tipo());
+                }
             }
             if (objectClass == AdminDeleteUserReq.class) {
                 reply = GoogleJson.decode(json, AdminDeleteUserReply.class);
+                AdminDeleteUserReply objReply = (AdminDeleteUserReply) reply;
+                if(reply != null && reply.payload() != null){
+                    ReplyInterface ReplyInterface = new ReplyInterface(null, objReply.payload().mensagem());
+                }
             }
             if (objectClass == DeleteUserReq.class) {
                 reply = GoogleJson.decode(json, DeleteUserReply.class);
+                DeleteUserReply objReply = (DeleteUserReply) reply;
+                if(reply != null && reply.payload() != null){
+                    ReplyInterface ReplyInterface = new ReplyInterface(null, objReply.payload().mensagem());
+                }
             }
             if (objectClass == FindUserReq.class) {
                 reply = GoogleJson.decode(json, FindUserReply.class);
+                FindUserReply objReply = (FindUserReply) reply;
+                if(reply != null && reply.payload() != null){
+                    ReplyInterface ReplyInterface = new ReplyInterface(null, "User" + "\nName: " + objReply.payload().nome()
+                                                                                                                + "\nEmail: " + objReply.payload().email()
+                                                                                                                + "\nID: " + objReply.payload().registro()
+                                                                                                                + "\nType: " + objReply.payload().tipo());
+                }
             }
             if (objectClass == AdminFindUsersReq.class) {
                 reply = GoogleJson.decode(json, AdminFindUsersReply.class);
+                AdminFindUsersReply objReply = (AdminFindUsersReply) reply;
+                if(reply != null && reply.payload() != null){
+                    ReplyInterface ReplyInterface = new ReplyInterface(null, objReply.userListFormatted(objReply.payload().userList()));
+                }
             }
             if (objectClass == AdminFindUserReq.class) {
                 reply = GoogleJson.decode(json, FindUserReply.class);
+                FindUserReply objReply = (FindUserReply) reply;
+                if(reply != null && reply.payload() != null){
+                    ReplyInterface ReplyInterface = new ReplyInterface(null, "User" + "\nName: " + objReply.payload().nome()
+                                                                                                        + "\nEmail: " + objReply.payload().email()
+                                                                                                        + "\nID: " + objReply.payload().registro()
+                                                                                                        + "\nType: " + objReply.payload().tipo());
+                }
             }
             if (objectClass == AdminUpdateUserReq.class) {
                 reply = GoogleJson.decode(json, AdminUpdateUserReply.class);
+                AdminUpdateUserReply objReply = (AdminUpdateUserReply) reply;
+                if(reply != null && reply.payload() != null){
+                    ReplyInterface ReplyInterface = new ReplyInterface(null, "User updated" + "\nName: " + objReply.payload().nome()
+                                                                                                                + "\nEmail: " + objReply.payload().email()
+                                                                                                                + "\nID: " + objReply.payload().registro()
+                                                                                                                + "\nType: " + objReply.payload().tipo());
+                }
             }
             if (objectClass == UpdateUserReq.class) {
                 reply = GoogleJson.decode(json, UpdateUserReply.class);
+                UpdateUserReply objReply = (UpdateUserReply) reply;
+                if(reply != null && reply.payload() != null){
+                    ReplyInterface ReplyInterface = new ReplyInterface(null, "User updated" + "\nName: " + objReply.payload().nome()
+                                                                                                                + "\nEmail: " + objReply.payload().email()
+                                                                                                                + "\nID: " + objReply.payload().registro()
+                                                                                                                + "\nType: " + objReply.payload().tipo());
+                }
             }
             if (reply == null || reply.payload() == null) {
                 reply = GoogleJson.decode(json, ErrorReply.class);
+                ErrorReply objReply = (ErrorReply) reply;
+                ReplyInterface ReplyInterface = new ReplyInterface(null, "Error\n" + objReply.payload().mensagem());
             }
             ValidationGson.validate(reply);
             return reply;
