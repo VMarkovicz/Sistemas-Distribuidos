@@ -1,10 +1,13 @@
 package client;
 
+import client.clientInterfaces.OperationSelect;
 import client.clientInterfaces.SocketConnection;
+import client.clientInterfaces.operationInterfaces.*;
 import com.google.gson.JsonSyntaxException;
 import gson.Error;
 import gson.GoogleJson;
 import gson.ValidationGson;
+import jwt.JWTManager;
 import protocols.Optional;
 import protocols.reply.*;
 import protocols.requisitions.*;
@@ -87,44 +90,60 @@ public class Client {
         String method;
         while (true) {
             System.out.print("Enter Operation: ");
-            method = stdin.readLine();
+            OperationSelect operationSelectInterface = new OperationSelect(null);
+//            if(token != null){
+//                operationSelectInterface.Information.setText(JWTManager.getRegistro(token).toString());
+//            }
+            method = operationSelectInterface.getOperation();
             if (method == null) {
                 throw new IOException();
             }
 
             switch (method) {
                 case RequisitionOp.LOGIN -> {
-                    return makeReq(stdin, token, LoginReq.class);
+                    LoginInterface LoginInterface = new LoginInterface(null);
+                    return new LoginReq(LoginInterface.getEmail(), LoginInterface.getPassword());
                 }
                 case RequisitionOp.LOGOUT -> {
-                    return makeReq(stdin, token, LogoutReq.class);
+                    return new LogoutReq(token);
                 }
                 case RequisitionOp.ADMIN_CADASTRAR_USUARIO -> {
-                    return makeReq(stdin, token, AdminCreateUserReq.class);
+                    AdminCreateUserInterface AdminCreateUserInterface = new AdminCreateUserInterface(null);
+                    return new AdminCreateUserReq(token, AdminCreateUserInterface.getName(), AdminCreateUserInterface.getEmail(), AdminCreateUserInterface.getPassword());
                 }
                 case RequisitionOp.CADASTRAR_USUARIO -> {
-                    return makeReq(stdin, token, CreateUserReq.class);
+                    CreateUserInterface CreateUserInterface = new CreateUserInterface(null);
+                    return new CreateUserReq(token, CreateUserInterface.getName(), CreateUserInterface.getEmail(), CreateUserInterface.getPassword());
                 }
                 case RequisitionOp.ADMIN_DELETAR_USUARIO -> {
-                    return makeReq(stdin, token, AdminDeleteUserReq.class);
+                    AdminDeleteUserInterface AdminDeleteUserInterface = new AdminDeleteUserInterface(null, token);
+                    return new AdminDeleteUserReq(token, AdminDeleteUserInterface.getIdToDelete());
                 }
                 case RequisitionOp.DELETAR_USUARIO -> {
-                    return makeReq(stdin, token, DeleteUserReq.class);
+                    DeleteUserInterface DeleteUserInterface = new DeleteUserInterface(null);
+                    return new DeleteUserReq(token, DeleteUserInterface.getEmail(), DeleteUserInterface.getPassword());
                 }
                 case RequisitionOp.BUSCAR_USUARIO -> {
-                    return makeReq(stdin, token, FindUserReq.class);
+                    return new FindUserReq(token);
                 }
                 case RequisitionOp.ADMIN_BUSCAR_USUARIOS -> {
-                    return makeReq(stdin, token, AdminFindUsersReq.class);
+                    return new AdminFindUsersReq(token);
                 }
                 case RequisitionOp.ADMIN_BUSCAR_USUARIO -> {
-                    return makeReq(stdin, token, AdminFindUserReq.class);
+                    AdminFindUserInterface AdminFindUserInterface = new AdminFindUserInterface(null);
+                    return new AdminFindUserReq(token, AdminFindUserInterface.getIdToFind());
                 }
                 case RequisitionOp.ADMIN_ATUALIZAR_USUARIO -> {
-                    return makeReq(stdin, token, AdminUpdateUserReq.class);
+                    AdminUpdateUserInterface AdminUpdateUserInterface = new AdminUpdateUserInterface(null, token);
+                    return new AdminUpdateUserReq(token,    AdminUpdateUserInterface.getIdToUpdate(),
+                                                            AdminUpdateUserInterface.getName(),
+                                                            AdminUpdateUserInterface.getEmail(),
+                                                            AdminUpdateUserInterface.getPassword(),
+                                                            AdminUpdateUserInterface.getIsAdmin());
                 }
                 case RequisitionOp.ATUALIZAR_USUARIO -> {
-                    return makeReq(stdin, token, UpdateUserReq.class);
+                    UpdateUserInterface UpdateUserInterface = new UpdateUserInterface(null);
+                    return new UpdateUserReq(token, UpdateUserInterface.getName(), UpdateUserInterface.getEmail(), UpdateUserInterface.getPassword());
                 }
             }
         }
