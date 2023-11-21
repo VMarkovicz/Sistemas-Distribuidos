@@ -3,6 +3,7 @@ package client.clientInterfaces;
 import lombok.Getter;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -27,11 +28,12 @@ public class SocketConnection extends JDialog{
         setModal(true);
         setLocationRelativeTo(parent);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+
         OKButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                IpServer = IPField.getText();
-                Port = Integer.parseInt(PortField.getText());
+                IpServer = IPField.getText().trim().isEmpty() ? null : IPField.getText();
+                Port = PortField.getText().trim().isEmpty() ? null : Integer.parseInt(PortField.getText());
                 dispose();
             }
         });

@@ -38,7 +38,7 @@ public class AdminUpdateUserInterface extends JDialog{
         updateButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                idToUpdate = Long.parseLong(IDToUpdate.getText());
+                idToUpdate = IDToUpdate.getText().trim().isEmpty() ? null : Long.parseLong(IDToUpdate.getText());
                 name = NameField.getText().trim().isEmpty() ? null : NameField.getText();
                 email = EmailField.getText().trim().isEmpty() ? null : EmailField.getText();
                 password = PasswordField.getText().trim().isEmpty() ? null : PasswordField.getText();

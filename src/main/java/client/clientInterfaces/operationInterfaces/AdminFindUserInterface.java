@@ -26,7 +26,7 @@ public class AdminFindUserInterface extends JDialog{
         findButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                idToFind = Long.parseLong(IDToFind.getText());
+                idToFind = IDToFind.getText().trim().isEmpty() ? null : Long.parseLong(IDToFind.getText());
                 dispose();
             }
         });

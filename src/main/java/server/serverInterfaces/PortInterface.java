@@ -1,27 +1,32 @@
-package client.clientInterfaces;
+package server.serverInterfaces;
+
+import lombok.Getter;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class ReplyInterface extends JDialog{
-    private JPanel Reply;
+public class PortInterface extends JDialog{
+    private JPanel PortInterface;
+    private JTextField PortField;
     private JButton OKButton;
-    private JLabel Message;
+    private JLabel PORTLabel;
+    @Getter
+    private int Port;
 
-    public ReplyInterface(JFrame parent, String message){
+    public PortInterface(JFrame parent){
         super(parent);
-        setContentPane(Reply);
-        setMinimumSize(new Dimension(500, 200));
+        setContentPane(PortInterface);
+        setMinimumSize(new Dimension(500, 500));
         setModal(true);
         setLocationRelativeTo(parent);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        Message.setText(message);
 
         OKButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                Port = PortField.getText().trim().isEmpty() ? null : Integer.parseInt(PortField.getText());
                 dispose();
             }
         });

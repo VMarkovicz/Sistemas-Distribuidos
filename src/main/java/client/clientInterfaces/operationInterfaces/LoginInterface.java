@@ -28,8 +28,8 @@ public class LoginInterface extends JDialog{
         loginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                email = EmailField.getText();
-                password = PasswordField.getText();
+                email = EmailField.getText().trim().isEmpty() ? null : EmailField.getText();
+                password = PasswordField.getText().trim().isEmpty() ? null : PasswordField.getText();
                 dispose();
             }
         });

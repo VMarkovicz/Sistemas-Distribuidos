@@ -26,7 +26,7 @@ public class AdminDeleteUserInterface extends JDialog{
         deleteButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                idToDelete = Objects.equals(IDToDelete.getText(), "MY_ID") ? JWTManager.getRegistro(token) : Long.parseLong(IDToDelete.getText());
+                idToDelete = IDToDelete.getText().trim().isEmpty() ? null : Objects.equals(IDToDelete.getText(), "MY_ID") ? JWTManager.getRegistro(token) : Long.parseLong(IDToDelete.getText());
                 dispose();
             }
         });

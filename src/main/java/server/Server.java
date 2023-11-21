@@ -9,6 +9,8 @@ import server.dataTransferObject.CreateUserDTO;
 import server.exception.ServerReplyException;
 import server.methods.*;
 import server.routeController.RouteController;
+import server.serverInterfaces.PortInterface;
+import server.serverInterfaces.ServerInterface;
 
 import java.net.*;
 import java.io.*;
@@ -21,17 +23,22 @@ public class Server extends Thread {
 
         UserManager.getInstance().createUser(new CreateUserDTO("admin", "admin@admin", "admin", true));
 
-        BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
-        System.out.print("Port: ");
-        final int port = Integer.parseInt(stdIn.readLine());
+//        BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
+//        System.out.print("Port: ");
+//        final int port = Integer.parseInt(stdIn.readLine());
+        PortInterface PortInterface = new PortInterface(null);
+        int port = PortInterface.getPort();
 
         InetAddress ipAddress = InetAddress.getByName("0.0.0.0");
         try(ServerSocket serverSocket = new ServerSocket(port, 0, ipAddress)) {
             System.out.println("Connection Socket Created");
+
             while (true) {
                 try {
                     System.out.println("Waiting for Connection");
+                    //ServerInterface serverInterface = new ServerInterface(null);
                     new Server(serverSocket.accept());
+
                 } catch (IOException e) {
                     System.err.println("Accept failed.");
                     System.exit(1);
@@ -65,7 +72,7 @@ public class Server extends Thread {
 
     public void run() {
         System.out.println ("New Communication Thread Started");
-        
+
         try(clientSocket;
 
             PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);

@@ -32,9 +32,9 @@ public class CreateUserInterface extends JDialog{
         registerButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                name = NameField.getText();
-                email = EmailField.getText();
-                password = PasswordField.getText();
+                name = NameField.getText().trim().isEmpty() ? null : NameField.getText();
+                email = EmailField.getText().trim().isEmpty() ? null : EmailField.getText();
+                password = PasswordField.getText().trim().isEmpty() ? null : PasswordField.getText();
                 dispose();
             }
         });
