@@ -23,9 +23,6 @@ public class Server extends Thread {
 
         UserManager.getInstance().createUser(new CreateUserDTO("admin", "admin@admin", "admin", true));
 
-//        BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
-//        System.out.print("Port: ");
-//        final int port = Integer.parseInt(stdIn.readLine());
         PortInterface PortInterface = new PortInterface(null);
         int port = PortInterface.getPort();
 
@@ -81,9 +78,7 @@ public class Server extends Thread {
             String inputLine;
             while ((inputLine = in.readLine()) != null) {
                 System.out.println("Received from "+ clientSocket.getInetAddress() +": " + inputLine);
-
                 Reply<?> reply;
-
                 try {
                     reply = routes.serve(inputLine);
                 } catch (ServerReplyException exception) {

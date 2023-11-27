@@ -35,6 +35,7 @@ public class AdminCreateUserInterface extends JDialog {
                 name = NameField.getText().trim().isEmpty() ? null : NameField.getText();
                 email = EmailField.getText().trim().isEmpty() ? null : EmailField.getText();
                 password = PasswordField.getText().trim().isEmpty() ? null : PasswordField.getText();
+
                 dispose();
             }
         });
