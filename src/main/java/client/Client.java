@@ -95,7 +95,7 @@ public class Client {
             if (method == null) {
                 throw new IOException();
             }
-
+            System.out.println(method);
             switch (method) {
                 case RequisitionOp.LOGIN -> {
                     LoginInterface LoginInterface = new LoginInterface(null);
@@ -142,6 +142,49 @@ public class Client {
                     UpdateUserInterface UpdateUserInterface = new UpdateUserInterface(null);
                     return new UpdateUserReq(token, UpdateUserInterface.getName(), UpdateUserInterface.getEmail(), UpdateUserInterface.getPassword());
                 }
+                case RequisitionOp.CADASTRAR_PDI -> {
+                    AdminCreatePDIInterface createPDIInterface = new AdminCreatePDIInterface(null);
+                    return new AdminCreatePDIReq(token, createPDIInterface.getName(),
+                                                        createPDIInterface.getPosX(),
+                                                        createPDIInterface.getPosY(),
+                                                        createPDIInterface.getWarning(),
+                                                        createPDIInterface.getAccessible());
+                }
+                case RequisitionOp.BUSCAR_PDIS -> {
+                    return new AdminFindPDIsReq(token);
+                }
+                case RequisitionOp.ATUALIZAR_PDI -> {
+                    AdminUpdatePDIInterface updatePDIInterface = new AdminUpdatePDIInterface(null);
+                    return new AdminUpdatePDIReq(token, updatePDIInterface.getId(),
+                                                        updatePDIInterface.getName(),
+                                                        updatePDIInterface.getWarning(),
+                                                        updatePDIInterface.getAccessible());
+                }
+                case RequisitionOp.DELETAR_PDI -> {
+                    AdminDeletePDIInterface deletePDIInterface = new AdminDeletePDIInterface(null);
+                    return new AdminDeletePDIReq(token, deletePDIInterface.getPdiToDelete());
+                }
+                case RequisitionOp.CADASTRAR_SEGMENTO -> {
+                    AdminCreateSegmentInterface createSegmentInterface = new AdminCreateSegmentInterface(null);
+                    return new AdminCreateSegmentReq(token, createSegmentInterface.getPdi_inicial(),
+                                                            createSegmentInterface.getPdi_final(),
+                                                            createSegmentInterface.getWarning(),
+                                                            createSegmentInterface.getAccessible());
+                }
+                case RequisitionOp.BUSCAR_SEGMENTOS -> {
+                    return new AdminFindSegmentsReq(token);
+                }
+                case RequisitionOp.ATUALIZAR_SEGMENTO -> {
+                    AdminUpdateSegmentInterface updateSegmentInterface = new AdminUpdateSegmentInterface(null);
+                    return new AdminUpdateSegmentReq(token, updateSegmentInterface.getPdi_inicial(),
+                                                            updateSegmentInterface.getPdi_final(),
+                                                            updateSegmentInterface.getWarning(),
+                                                            updateSegmentInterface.getAccessible());
+                }
+                case RequisitionOp.DELETAR_SEGMENTO -> {
+                    AdminDeleteSegmentInterface deleteSegmentInterface = new AdminDeleteSegmentInterface(null);
+                    return new AdminDeleteSegmentReq(token, deleteSegmentInterface.getPdi_inicial(), deleteSegmentInterface.getPdi_final());
+                }
             }
         }
     }
@@ -179,6 +222,8 @@ public class Client {
                     constructorArguments[i] = null;
                 } else if (parameters[i].getType() == Long.class) {
                     constructorArguments[i] = Long.parseLong(line);
+                } else if (parameters[i].getType() == Double.class) {
+                    constructorArguments[i] = Double.parseDouble(line);
                 } else if (parameters[i].getType() == Boolean.class) {
 
                     constructorArguments[i] = Boolean.parseBoolean(line);
@@ -298,6 +343,62 @@ public class Client {
                                                                                                                     + "<br>ID:    " + objReply.payload().registro()
                                                                                                                     + "<br>Type:    " + objReply.payload().tipo()
                                                                                                                     + "</html>");
+                }
+            }
+            if (objectClass == AdminCreatePDIReq.class) {
+                reply = GoogleJson.decode(json, AdminCreatePDIReply.class);
+                AdminCreatePDIReply objReply = (AdminCreatePDIReply) reply;
+                if(reply != null && reply.payload() != null){
+                    ReplyInterface ReplyInterface = new ReplyInterface(null, objReply.payload().toString());
+                }
+            }
+            if (objectClass == AdminFindPDIsReq.class) {
+                reply = GoogleJson.decode(json, AdminFindPDIsReply.class);
+                AdminFindPDIsReply objReply = (AdminFindPDIsReply) reply;
+                if(reply != null && reply.payload() != null){
+                    ReplyInterface ReplyInterface = new ReplyInterface(null, objReply.payload().toString());
+                }
+            }
+            if (objectClass == AdminUpdatePDIReq.class) {
+                reply = GoogleJson.decode(json, AdminUpdatePDIReply.class);
+                AdminUpdatePDIReply objReply = (AdminUpdatePDIReply) reply;
+                if(reply != null && reply.payload() != null){
+                    ReplyInterface ReplyInterface = new ReplyInterface(null, objReply.payload().toString());
+                }
+            }
+            if (objectClass == AdminDeletePDIReq.class) {
+                reply = GoogleJson.decode(json, AdminDeletePDIReply.class);
+                AdminDeletePDIReply objReply = (AdminDeletePDIReply) reply;
+                if(reply != null && reply.payload() != null){
+                    ReplyInterface ReplyInterface = new ReplyInterface(null, objReply.payload().mensagem());
+                }
+            }
+            if (objectClass == AdminCreateSegmentReq.class) {
+                reply = GoogleJson.decode(json, AdminCreateSegmentReply.class);
+                AdminCreateSegmentReply objReply = (AdminCreateSegmentReply) reply;
+                if(reply != null && reply.payload() != null){
+                    ReplyInterface ReplyInterface = new ReplyInterface(null, objReply.payload().toString());
+                }
+            }
+            if (objectClass == AdminFindSegmentsReq.class) {
+                reply = GoogleJson.decode(json, AdminFindSegmentsReply.class);
+                AdminFindSegmentsReply objReply = (AdminFindSegmentsReply) reply;
+                if(reply != null && reply.payload() != null){
+                    ReplyInterface ReplyInterface = new ReplyInterface(null, objReply.payload().toString());
+                }
+            }
+            if (objectClass == AdminUpdateSegmentReq.class) {
+                reply = GoogleJson.decode(json, AdminUpdateSegmentReply.class);
+                AdminUpdateSegmentReply objReply = (AdminUpdateSegmentReply) reply;
+                if(reply != null && reply.payload() != null){
+                    ReplyInterface ReplyInterface = new ReplyInterface(null, objReply.payload().toString());
+                }
+            }
+            if (objectClass == AdminDeleteSegmentReq.class) {
+                reply = GoogleJson.decode(json, AdminDeleteSegmentReply.class);
+                AdminDeleteSegmentReply objReply = (AdminDeleteSegmentReply) reply;
+                if(reply != null && reply.payload() != null){
+                    ReplyInterface ReplyInterface = new ReplyInterface(null, objReply.payload().mensagem());
                 }
             }
             if (reply == null || reply.payload() == null) {

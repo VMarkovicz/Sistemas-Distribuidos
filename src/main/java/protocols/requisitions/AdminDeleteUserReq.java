@@ -14,8 +14,6 @@ public class AdminDeleteUserReq extends Requisition<AdminDeleteUserReq.Payload> 
 
     public AdminDeleteUserReq(String token, Long registro) {
         super(new Header(RequisitionOp.ADMIN_DELETAR_USUARIO, token));
-        //Long registerToPayload = Objects.equals(registro, "MY_ID") ? JWTManager.getRegistro(token) : Long.parseLong(registro);
-
         payload = new Payload(registro);
     }
 

@@ -30,6 +30,8 @@ public class LoginInterface extends JDialog{
             public void actionPerformed(ActionEvent e) {
                 email = EmailField.getText().trim().isEmpty() ? null : EmailField.getText();
                 password = PasswordField.getText().trim().isEmpty() ? null : PasswordField.getText();
+//                email = "admin@admin";
+//                password = "admin";
                 dispose();
             }
         });

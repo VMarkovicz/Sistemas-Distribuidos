@@ -4,6 +4,8 @@ import gson.GoogleJson;
 import protocols.reply.LogoutReply;
 import protocols.reply.Reply;
 import protocols.requisitions.RequisitionOp;
+import server.controller.PDIManager;
+import server.controller.SegmentManager;
 import server.controller.UserManager;
 import server.dataTransferObject.CreateUserDTO;
 import server.exception.ServerReplyException;
@@ -20,6 +22,9 @@ public class Server extends Thread {
     private RouteController routes = null;
 
     public static void main(String[] args) throws IOException, ServerReplyException {
+        UserManager.getInstance();
+        PDIManager.getInstance();
+        SegmentManager.getInstance();
 
         UserManager.getInstance().createUser(new CreateUserDTO("admin", "admin@admin", "admin", true));
 
@@ -62,6 +67,14 @@ public class Server extends Thread {
                     .addRoute(RequisitionOp.ADMIN_BUSCAR_USUARIO, new AdminFindUser())
                     .addRoute(RequisitionOp.ATUALIZAR_USUARIO, new UpdateUser())
                     .addRoute(RequisitionOp.ADMIN_ATUALIZAR_USUARIO, new AdminUpdateUser())
+                    .addRoute(RequisitionOp.CADASTRAR_PDI, new AdminCreatePDI())
+                    .addRoute(RequisitionOp.BUSCAR_PDIS, new AdminFindPDIs())
+                    .addRoute(RequisitionOp.ATUALIZAR_PDI, new AdminUpdatePDI())
+                    .addRoute(RequisitionOp.DELETAR_PDI, new AdminDeletePDI())
+                    .addRoute(RequisitionOp.CADASTRAR_SEGMENTO, new AdminCreateSegment())
+                    .addRoute(RequisitionOp.BUSCAR_SEGMENTOS, new AdminFindSegments())
+                    .addRoute(RequisitionOp.ATUALIZAR_SEGMENTO, new AdminUpdateSegment())
+                    .addRoute(RequisitionOp.DELETAR_SEGMENTO, new AdminDeleteSegment())
                     .build();
         }
         start();

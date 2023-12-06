@@ -5,7 +5,6 @@ import jakarta.persistence.RollbackException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import server.dataTransferObject.UserDTO;
 import server.exception.BadReqException;
 import server.exception.NotFoundException;
 import server.exception.ServerReplyException;

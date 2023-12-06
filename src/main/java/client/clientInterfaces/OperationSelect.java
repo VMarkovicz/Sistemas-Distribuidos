@@ -1,10 +1,7 @@
 package client.clientInterfaces;
 
-import client.Client;
-import jwt.JWTManager;
 import lombok.Getter;
 import protocols.requisitions.RequisitionOp;
-import server.models.User;
 
 import javax.swing.*;
 import java.awt.*;
@@ -24,6 +21,14 @@ public class OperationSelect extends JDialog{
     private JButton ADMINBUSCARUSUARIOButton;
     private JButton ADMINATUALIZARUSUARIOButton;
     private JButton ATUALIZARUSUARIOButton;
+    private JButton CADASTRARPDIButton;
+    private JButton DELETARPDIButton;
+    private JButton BUSCARPDIButton;
+    private JButton ATUALIZARPDIButton;
+    private JButton CADASTRARSEGMENTOButton;
+    private JButton DELETARSEGMENTOButton;
+    private JButton BUSCARSEGMENTOButton;
+    private JButton ATUALIZARSEGMENTOButton;
     @Getter
     private String Operation = null;
 
@@ -108,6 +113,62 @@ public class OperationSelect extends JDialog{
             @Override
             public void actionPerformed(ActionEvent e) {
                 Operation = RequisitionOp.ATUALIZAR_USUARIO;
+                dispose();
+            }
+        });
+        CADASTRARPDIButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Operation = RequisitionOp.CADASTRAR_PDI;
+                dispose();
+            }
+        });
+        DELETARPDIButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Operation = RequisitionOp.DELETAR_PDI;
+                dispose();
+            }
+        });
+        BUSCARPDIButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Operation = RequisitionOp.BUSCAR_PDIS;
+                dispose();
+            }
+        });
+        ATUALIZARPDIButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Operation = RequisitionOp.ATUALIZAR_PDI;
+                dispose();
+            }
+        });
+        CADASTRARSEGMENTOButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Operation = RequisitionOp.CADASTRAR_SEGMENTO;
+                dispose();
+            }
+        });
+        DELETARSEGMENTOButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Operation = RequisitionOp.DELETAR_SEGMENTO;
+                dispose();
+            }
+        });
+        BUSCARSEGMENTOButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Operation = RequisitionOp.BUSCAR_SEGMENTOS;
+                dispose();
+            }
+        });
+        ATUALIZARSEGMENTOButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Operation = RequisitionOp.ATUALIZAR_SEGMENTO;
                 dispose();
             }
         });
