@@ -3,7 +3,7 @@ package protocols.requisitions;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
 import lombok.Getter;
-import server.dataTransferObject.Posicao;
+import server.dataTransferObject.Utils.Posicao;
 @Getter
 public class AdminCreatePDIReq extends Requisition<AdminCreatePDIReq.Payload>{
     @NotNull(message = "Payload cannot be null") @Valid

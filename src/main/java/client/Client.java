@@ -185,6 +185,10 @@ public class Client {
                     AdminDeleteSegmentInterface deleteSegmentInterface = new AdminDeleteSegmentInterface(null);
                     return new AdminDeleteSegmentReq(token, deleteSegmentInterface.getPdi_inicial(), deleteSegmentInterface.getPdi_final());
                 }
+                case RequisitionOp.BUSCAR_ROTA -> {
+//                    AdminDeleteSegmentInterface deleteSegmentInterface = new AdminDeleteSegmentInterface(null);
+//                    return new AdminDeleteSegmentReq(token, deleteSegmentInterface.getPdi_inicial(), deleteSegmentInterface.getPdi_final());
+                }
             }
         }
     }
@@ -401,6 +405,13 @@ public class Client {
                     ReplyInterface ReplyInterface = new ReplyInterface(null, objReply.payload().mensagem());
                 }
             }
+//            if (objectClass == AdminDeleteSegmentReq.class) {
+//                reply = GoogleJson.decode(json, AdminDeleteSegmentReply.class);
+//                AdminDeleteSegmentReply objReply = (AdminDeleteSegmentReply) reply;
+//                if(reply != null && reply.payload() != null){
+//                    ReplyInterface ReplyInterface = new ReplyInterface(null, objReply.payload().mensagem());
+//                }
+//            }
             if (reply == null || reply.payload() == null) {
                 reply = GoogleJson.decode(json, ErrorReply.class);
                 ErrorReply objReply = (ErrorReply) reply;

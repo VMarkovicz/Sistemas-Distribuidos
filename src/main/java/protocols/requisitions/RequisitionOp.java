@@ -20,4 +20,5 @@ public interface RequisitionOp {
     String BUSCAR_SEGMENTOS = "BUSCAR_SEGMENTOS";
     String ATUALIZAR_SEGMENTO = "ATUALIZAR_SEGMENTO";
     String DELETAR_SEGMENTO = "DELETAR_SEGMENTO";
+    String BUSCAR_ROTA = "BUSCAR_ROTA";
 }

@@ -8,7 +8,6 @@ import server.controller.PDIManager;
 import server.controller.SegmentManager;
 import server.dataTransferObject.CreateSegmentDTO;
 import server.dataTransferObject.PDIDTO;
-import server.dataTransferObject.Posicao;
 import server.exception.ServerReplyException;
 import server.methods.validation.ValidationAdmin;
 import server.methods.validation.ValidationToken;

@@ -2,6 +2,7 @@ package server.dataTransferObject;
 
 import jakarta.validation.constraints.*;
 import lombok.Builder;
+import server.dataTransferObject.Utils.Posicao;
 import server.models.PDI;
 
 

@@ -10,10 +10,13 @@
     <children>
       <component id="c8df4" class="javax.swing.JLabel" binding="Label">
         <constraints>
-          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="1" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
+          <alignmentY value="0.5"/>
           <text value="Users Connected"/>
+          <verticalAlignment value="0"/>
+          <verticalTextPosition value="0"/>
         </properties>
       </component>
       <component id="47b11" class="javax.swing.JLabel" binding="UsersField">

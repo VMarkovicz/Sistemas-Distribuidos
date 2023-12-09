@@ -1,4 +1,4 @@
-package server.dataTransferObject;
+package server.dataTransferObject.Utils;
 
 import jakarta.validation.constraints.NotNull;
 

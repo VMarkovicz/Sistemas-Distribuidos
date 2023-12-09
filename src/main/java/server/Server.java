@@ -1,6 +1,7 @@
 package server;
 
 import gson.GoogleJson;
+import protocols.reply.LoginReply;
 import protocols.reply.LogoutReply;
 import protocols.reply.Reply;
 import protocols.requisitions.RequisitionOp;
@@ -11,15 +12,20 @@ import server.dataTransferObject.CreateUserDTO;
 import server.exception.ServerReplyException;
 import server.methods.*;
 import server.routeController.RouteController;
+import server.serverInterfaces.ConnectecIPs;
 import server.serverInterfaces.PortInterface;
 import server.serverInterfaces.ServerInterface;
 
 import java.net.*;
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.Semaphore;
 
 public class Server extends Thread {
     private final Socket clientSocket;
     private RouteController routes = null;
+    static ServerInterface serverInterface = new ServerInterface();
 
     public static void main(String[] args) throws IOException, ServerReplyException {
         UserManager.getInstance();
@@ -30,8 +36,8 @@ public class Server extends Thread {
 
         PortInterface PortInterface = new PortInterface(null);
         int port = PortInterface.getPort();
-
         InetAddress ipAddress = InetAddress.getByName("0.0.0.0");
+
         try(ServerSocket serverSocket = new ServerSocket(port, 0, ipAddress)) {
             System.out.println("Connection Socket Created");
 
@@ -39,6 +45,7 @@ public class Server extends Thread {
                 try {
                     System.out.println("Waiting for Connection");
                     //ServerInterface serverInterface = new ServerInterface(null);
+                    serverInterface.setVisible(true);
                     new Server(serverSocket.accept());
 
                 } catch (IOException e) {
@@ -75,6 +82,7 @@ public class Server extends Thread {
                     .addRoute(RequisitionOp.BUSCAR_SEGMENTOS, new AdminFindSegments())
                     .addRoute(RequisitionOp.ATUALIZAR_SEGMENTO, new AdminUpdateSegment())
                     .addRoute(RequisitionOp.DELETAR_SEGMENTO, new AdminDeleteSegment())
+                    /*.addRoute(RequisitionOp.BUSCAR_ROTA, new AdminFindRoute())*/
                     .build();
         }
         start();
@@ -82,7 +90,9 @@ public class Server extends Thread {
 
     public void run() {
         System.out.println ("New Communication Thread Started");
-
+        serverInterface.setConnectedUsers();
+        System.out.println(serverInterface.connectedIPs.getConnectedIPs());
+        serverInterface.repaint();
         try(clientSocket;
 
             PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
@@ -102,16 +112,30 @@ public class Server extends Thread {
                 System.out.println("Sent to "+ clientSocket.getInetAddress() +": " + jsonResponse);
                 out.println(jsonResponse);
                 if(!clientSocket.isConnected() || clientSocket.isClosed()) {
+                    serverInterface.connectedIPs.removeIP(clientSocket.getInetAddress().toString());
+                    serverInterface.setConnectedUsers();
+                    serverInterface.repaint();
                     break;
                 }
                 if (reply instanceof LogoutReply) {
+                    serverInterface.connectedIPs.removeIP(clientSocket.getInetAddress().toString());
+                    serverInterface.connectedIPs.addIP(clientSocket.getInetAddress().toString());
+                    serverInterface.setConnectedUsers();
+                    serverInterface.repaint();
                     break;
                 }
+                if (reply instanceof LoginReply) {
+                    serverInterface.connectedIPs.addIP(clientSocket.getInetAddress().toString());
+                    serverInterface.setConnectedUsers();
+                    serverInterface.repaint();
+                }
+                System.out.println(serverInterface.connectedIPs.getConnectedIPs());
             }
         }
         catch (IOException e) {
             System.err.println("Problem with Communication Server");
-            //System.exit(1);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
         assert(clientSocket.isClosed());
     }
