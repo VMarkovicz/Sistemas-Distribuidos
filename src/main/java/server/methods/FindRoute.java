@@ -1,12 +1,5 @@
 package server.methods;
 
-import protocols.reply.AdminFindRouteReply;
-import protocols.reply.Reply;
-import protocols.requisitions.AdminFindRouteReq;
-import server.exception.ServerReplyException;
-import server.methods.validation.ValidationAdmin;
-import server.methods.validation.ValidationToken;
-
 //public class AdminFindRoute extends MethodTemplate{
 //
 //    public Reply<?> startService(String jsonString) throws ServerReplyException {

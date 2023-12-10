@@ -19,10 +19,10 @@ public record SegmentDTO (
 
 ) {
 
-        public static SegmentDTO of(Segment segmentEntity) {
-            if (segmentEntity == null) {
-                return null;
-            }
-            return new SegmentDTO(segmentEntity.getPdi_inicial(), segmentEntity.getPdi_final(), segmentEntity.getDistancia(), segmentEntity.getAviso(), segmentEntity.getAcessivel());
+    public static SegmentDTO of(Segment segmentEntity) {
+        if (segmentEntity == null) {
+            return null;
         }
+        return new SegmentDTO(segmentEntity.getPdi_inicial(), segmentEntity.getPdi_final(), segmentEntity.getDistancia(), segmentEntity.getAviso(), segmentEntity.getAcessivel());
+    }
 }

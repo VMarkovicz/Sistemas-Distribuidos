@@ -39,6 +39,12 @@ public class SegmentManager {
         return entity;
     }
 
+    public List<Segment> findAccessibleSegments() throws NotFoundException {
+        return repository.findAccessibleSegments()
+                .stream()
+                .toList();
+    }
+
     public List<SegmentDTO> findSegments() throws ServerReplyException {
         return repository.findAllSegments()
                 .stream()

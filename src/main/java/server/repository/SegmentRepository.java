@@ -78,6 +78,14 @@ public class SegmentRepository {
         }
     }
 
+    public List<Segment> findAccessibleSegments() {
+        try (Session session = sessionFactory.openSession()) {
+            return session.createQuery("from Segment where acessivel = :true", Segment.class)
+                    .setParameter("true", true)
+                    .getResultList();
+        }
+    }
+
     public Segment updateSegment(Long id, Segment instance) throws ServerReplyException {
         try (Session session = sessionFactory.openSession()) {
 

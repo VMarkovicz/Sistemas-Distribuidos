@@ -6,14 +6,14 @@ import jakarta.validation.constraints.Positive;
 import lombok.Getter;
 
 @Getter
-public class AdminFindRouteReq extends Requisition<AdminFindRouteReq.Payload> {
+public class FindRouteReq extends Requisition<FindRouteReq.Payload> {
     @NotNull
     @Valid
-    private final AdminFindRouteReq.Payload payload;
+    private final FindRouteReq.Payload payload;
 
-    public AdminFindRouteReq(final String token, Long pdi_inicial, Long pdi_final) {
+    public FindRouteReq(final String token, Long pdi_inicial, Long pdi_final) {
         super(new Header(RequisitionOp.BUSCAR_ROTA, token));
-        payload = new AdminFindRouteReq.Payload(pdi_inicial, pdi_final);
+        payload = new FindRouteReq.Payload(pdi_inicial, pdi_final);
     }
 
     public record Payload(

@@ -29,6 +29,7 @@ public class OperationSelect extends JDialog{
     private JButton DELETARSEGMENTOButton;
     private JButton BUSCARSEGMENTOButton;
     private JButton ATUALIZARSEGMENTOButton;
+    private JButton BUSCARROTAButton;
     @Getter
     private String Operation = null;
 
@@ -169,6 +170,13 @@ public class OperationSelect extends JDialog{
             @Override
             public void actionPerformed(ActionEvent e) {
                 Operation = RequisitionOp.ATUALIZAR_SEGMENTO;
+                dispose();
+            }
+        });
+        BUSCARROTAButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Operation = RequisitionOp.BUSCAR_ROTA;
                 dispose();
             }
         });

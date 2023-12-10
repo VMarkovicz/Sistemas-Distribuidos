@@ -186,8 +186,8 @@ public class Client {
                     return new AdminDeleteSegmentReq(token, deleteSegmentInterface.getPdi_inicial(), deleteSegmentInterface.getPdi_final());
                 }
                 case RequisitionOp.BUSCAR_ROTA -> {
-//                    AdminDeleteSegmentInterface deleteSegmentInterface = new AdminDeleteSegmentInterface(null);
-//                    return new AdminDeleteSegmentReq(token, deleteSegmentInterface.getPdi_inicial(), deleteSegmentInterface.getPdi_final());
+                    FindRouteInterface findRouteInterface = new FindRouteInterface(null);
+                    return new FindRouteReq(token, findRouteInterface.getPdi_inicial(), findRouteInterface.getPdi_final());
                 }
             }
         }

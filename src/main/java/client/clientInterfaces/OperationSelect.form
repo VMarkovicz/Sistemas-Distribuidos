@@ -125,68 +125,76 @@
         <border type="none"/>
         <children/>
       </grid>
-      <component id="18bf2" class="javax.swing.JButton" binding="ATUALIZARSEGMENTOButton" default-binding="true">
+      <component id="bcc92" class="javax.swing.JButton" binding="CADASTRARPDIButton" default-binding="true">
         <constraints>
-          <grid row="9" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+          <grid row="1" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
-          <text value="ATUALIZAR SEGMENTO"/>
-        </properties>
-      </component>
-      <component id="982fe" class="javax.swing.JButton" binding="BUSCARSEGMENTOButton" default-binding="true">
-        <constraints>
-          <grid row="8" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-        </constraints>
-        <properties>
-          <text value="BUSCAR SEGMENTO"/>
-        </properties>
-      </component>
-      <component id="fee94" class="javax.swing.JButton" binding="DELETARSEGMENTOButton" default-binding="true">
-        <constraints>
-          <grid row="7" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-        </constraints>
-        <properties>
-          <text value="DELETAR SEGMENTO"/>
-        </properties>
-      </component>
-      <component id="5bcb6" class="javax.swing.JButton" binding="CADASTRARSEGMENTOButton" default-binding="true">
-        <constraints>
-          <grid row="6" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-        </constraints>
-        <properties>
-          <text value="CADASTRAR SEGMENTO"/>
-        </properties>
-      </component>
-      <component id="8fb74" class="javax.swing.JButton" binding="ATUALIZARPDIButton" default-binding="true">
-        <constraints>
-          <grid row="5" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-        </constraints>
-        <properties>
-          <text value="ATUALIZAR PDI"/>
-        </properties>
-      </component>
-      <component id="71ef8" class="javax.swing.JButton" binding="BUSCARPDIButton" default-binding="true">
-        <constraints>
-          <grid row="4" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-        </constraints>
-        <properties>
-          <text value="BUSCAR PDI"/>
+          <text value="CADASTRAR PDI"/>
         </properties>
       </component>
       <component id="1257b" class="javax.swing.JButton" binding="DELETARPDIButton" default-binding="true">
         <constraints>
-          <grid row="3" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+          <grid row="2" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
           <text value="DELETAR PDI"/>
         </properties>
       </component>
-      <component id="bcc92" class="javax.swing.JButton" binding="CADASTRARPDIButton" default-binding="true">
+      <component id="71ef8" class="javax.swing.JButton" binding="BUSCARPDIButton" default-binding="true">
         <constraints>
-          <grid row="2" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+          <grid row="3" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
-          <text value="CADASTRAR PDI"/>
+          <text value="BUSCAR PDI"/>
+        </properties>
+      </component>
+      <component id="8fb74" class="javax.swing.JButton" binding="ATUALIZARPDIButton" default-binding="true">
+        <constraints>
+          <grid row="4" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="ATUALIZAR PDI"/>
+        </properties>
+      </component>
+      <component id="5bcb6" class="javax.swing.JButton" binding="CADASTRARSEGMENTOButton" default-binding="true">
+        <constraints>
+          <grid row="5" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="CADASTRAR SEGMENTO"/>
+        </properties>
+      </component>
+      <component id="fee94" class="javax.swing.JButton" binding="DELETARSEGMENTOButton" default-binding="true">
+        <constraints>
+          <grid row="6" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="DELETAR SEGMENTO"/>
+        </properties>
+      </component>
+      <component id="982fe" class="javax.swing.JButton" binding="BUSCARSEGMENTOButton" default-binding="true">
+        <constraints>
+          <grid row="7" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="BUSCAR SEGMENTO"/>
+        </properties>
+      </component>
+      <component id="18bf2" class="javax.swing.JButton" binding="ATUALIZARSEGMENTOButton" default-binding="true">
+        <constraints>
+          <grid row="8" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="ATUALIZAR SEGMENTO"/>
+        </properties>
+      </component>
+      <component id="cee02" class="javax.swing.JButton" binding="BUSCARROTAButton" default-binding="true">
+        <constraints>
+          <grid row="9" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="BUSCAR ROTA"/>
         </properties>
       </component>
     </children>
