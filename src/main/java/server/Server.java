@@ -8,19 +8,18 @@ import protocols.requisitions.RequisitionOp;
 import server.controller.PDIManager;
 import server.controller.SegmentManager;
 import server.controller.UserManager;
+import server.dataTransferObject.CreatePDIDTO;
+import server.dataTransferObject.CreateSegmentDTO;
 import server.dataTransferObject.CreateUserDTO;
+import server.dataTransferObject.Utils.Posicao;
 import server.exception.ServerReplyException;
 import server.methods.*;
 import server.routeController.RouteController;
-import server.serverInterfaces.ConnectecIPs;
 import server.serverInterfaces.PortInterface;
 import server.serverInterfaces.ServerInterface;
 
 import java.net.*;
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.Semaphore;
 
 public class Server extends Thread {
     private final Socket clientSocket;
@@ -33,6 +32,8 @@ public class Server extends Thread {
         SegmentManager.getInstance();
 
         UserManager.getInstance().createUser(new CreateUserDTO("admin", "admin@admin", "admin", true));
+
+        createMap();
 
         PortInterface PortInterface = new PortInterface(null);
         int port = PortInterface.getPort();
@@ -82,7 +83,7 @@ public class Server extends Thread {
                     .addRoute(RequisitionOp.BUSCAR_SEGMENTOS, new AdminFindSegments())
                     .addRoute(RequisitionOp.ATUALIZAR_SEGMENTO, new AdminUpdateSegment())
                     .addRoute(RequisitionOp.DELETAR_SEGMENTO, new AdminDeleteSegment())
-                    /*.addRoute(RequisitionOp.BUSCAR_ROTA, new AdminFindRoute())*/
+                    .addRoute(RequisitionOp.BUSCAR_ROTA, new FindRoute())
                     .build();
         }
         start();
@@ -138,5 +139,416 @@ public class Server extends Thread {
             throw new RuntimeException(e);
         }
         assert(clientSocket.isClosed());
+    }
+
+    private static void createMap() throws ServerReplyException {
+        PDIManager.getInstance().createPDI(new CreatePDIDTO("Portaria", new Posicao(0.0, 0.0), "", true)); //1
+        PDIManager.getInstance().createPDI(new CreatePDIDTO("Escada Portaria-Capela", new Posicao(0.0, 100.0), "", true)); //2
+        PDIManager.getInstance().createPDI(new CreatePDIDTO("Capela", new Posicao(0.0, 105.0), "", true)); //3
+        PDIManager.getInstance().createPDI(new CreatePDIDTO("Auditorio", new Posicao(-20.0, 105.0), "", true)); //4
+        PDIManager.getInstance().createPDI(new CreatePDIDTO("Escada Inicio 1.o andar", new Posicao(20.0, 105.0), "", true)); //5
+        PDIManager.getInstance().createPDI(new CreatePDIDTO("Escada Baixo-Meio 1.o andar", new Posicao(20.0, 115.0), "", true)); //6
+        PDIManager.getInstance().createPDI(new CreatePDIDTO("Lab. 6", new Posicao(22.0, 105.0), "", true)); //7
+        PDIManager.getInstance().createPDI(new CreatePDIDTO("Lab. 7", new Posicao(22.0, 125.0), "", true)); //8
+        PDIManager.getInstance().createPDI(new CreatePDIDTO("Lab. 8", new Posicao(22.0, 135.0), "", true)); //9
+        PDIManager.getInstance().createPDI(new CreatePDIDTO("Escada Bebedouro", new Posicao(22.0, 140.0), "", true)); //10
+        PDIManager.getInstance().createPDI(new CreatePDIDTO("LaCa", new Posicao(20.0, 140.0), "", true)); //11
+        PDIManager.getInstance().createPDI(new CreatePDIDTO("Rampa", new Posicao(-20.0, 140.0), "", true)); //12
+        PDIManager.getInstance().createPDI(new CreatePDIDTO("Escada Inicio Audiotorio 1.o andar", new Posicao(-20.0, 103.0), "", true)); //13
+        PDIManager.getInstance().createPDI(new CreatePDIDTO("Escada Meio Audiotorio 1.o andar", new Posicao(-20.0, 93.0), "", true)); //14
+        PDIManager.getInstance().createPDI(new CreatePDIDTO("Escada Cima Audiotorio 1.o andar", new Posicao(-20.0, 105.0), "", true)); //15
+        PDIManager.getInstance().createPDI(new CreatePDIDTO("Lab. 4", new Posicao(10.0, 105.0), "", true)); //16
+        PDIManager.getInstance().createPDI(new CreatePDIDTO("Lab. 2", new Posicao(15.0, 105.0), "", true)); //17
+        PDIManager.getInstance().createPDI(new CreatePDIDTO("Escada Cima 1.o andar", new Posicao(18.0, 105.0), "", true)); //18
+        PDIManager.getInstance().createPDI(new CreatePDIDTO("Escada Cima-Meio 1.o andar", new Posicao(18.0, 115.0), "", true)); //19
+        PDIManager.getInstance().createPDI(new CreatePDIDTO("Lab. 1", new Posicao(20.0, 105.0), "", true)); //20
+        PDIManager.getInstance().createPDI(new CreatePDIDTO("Lab. 3", new Posicao(22.0, 105.0), "", true)); //21
+        PDIManager.getInstance().createPDI(new CreatePDIDTO("Lab. 5", new Posicao(22.0, 115.0), "", true)); //22
+        PDIManager.getInstance().createPDI(new CreatePDIDTO("DAINF", new Posicao(22.0, 130.0), "", true)); //23
+
+        SegmentManager.getInstance().createSegment(new CreateSegmentDTO(
+                Long.parseLong("1"),
+                Long.parseLong("2"),
+                Distance.calculateDistance(0.0, 0.0, 0.0, 100.0),
+                "",
+                true
+        )); //1
+
+        SegmentManager.getInstance().createSegment(new CreateSegmentDTO(
+                Long.parseLong("2"),
+                Long.parseLong("3"),
+                Distance.calculateDistance(0.0, 100.0, 0.0, 105.0),
+                "",
+                true
+        )); //2
+
+        SegmentManager.getInstance().createSegment(new CreateSegmentDTO(
+                Long.parseLong("3"),
+                Long.parseLong("4"),
+                Distance.calculateDistance(0.0, 105.0, -20.0, 105.0),
+                "",
+                true
+        )); //3
+
+        SegmentManager.getInstance().createSegment(new CreateSegmentDTO(
+                Long.parseLong("3"),
+                Long.parseLong("5"),
+                Distance.calculateDistance(0.0, 105.0, 20.0, 105.0),
+                "",
+                true
+        )); //4
+
+        SegmentManager.getInstance().createSegment(new CreateSegmentDTO(
+                Long.parseLong("5"),
+                Long.parseLong("6"),
+                Distance.calculateDistance(20.0, 105.0, 20.0, 115.0),
+                "",
+                true
+        )); //5
+
+        SegmentManager.getInstance().createSegment(new CreateSegmentDTO(
+                Long.parseLong("5"),
+                Long.parseLong("7"),
+                Distance.calculateDistance(20.0, 105.0, 22.0, 105.0),
+                "",
+                true
+        )); //6
+
+        SegmentManager.getInstance().createSegment(new CreateSegmentDTO(
+                Long.parseLong("7"),
+                Long.parseLong("8"),
+                Distance.calculateDistance(22.0, 105.0, 22.0, 125.0),
+                "",
+                true
+        )); //7
+
+        SegmentManager.getInstance().createSegment(new CreateSegmentDTO(
+                Long.parseLong("8"),
+                Long.parseLong("9"),
+                Distance.calculateDistance(22.0, 125.0, 22.0, 135.0),
+                "",
+                true
+        )); //8
+
+        SegmentManager.getInstance().createSegment(new CreateSegmentDTO(
+                Long.parseLong("9"),
+                Long.parseLong("10"),
+                Distance.calculateDistance(22.0, 135.0, 22.0, 140.0),
+                "",
+                true
+        )); //9
+
+        SegmentManager.getInstance().createSegment(new CreateSegmentDTO(
+                Long.parseLong("10"),
+                Long.parseLong("11"),
+                Distance.calculateDistance(22.0, 140.0, 20.0, 140.0),
+                "",
+                true
+        )); //10
+
+        SegmentManager.getInstance().createSegment(new CreateSegmentDTO(
+                Long.parseLong("11"),
+                Long.parseLong("12"),
+                Distance.calculateDistance(20.0, 140.0, -20.0, 140.0),
+                "",
+                true
+        )); //11
+
+        SegmentManager.getInstance().createSegment(new CreateSegmentDTO(
+                Long.parseLong("12"),
+                Long.parseLong("4"),
+                Distance.calculateDistance(-20.0, 140.0, -20.0, 105.0),
+                "",
+                true
+        )); //12
+
+        SegmentManager.getInstance().createSegment(new CreateSegmentDTO(
+                Long.parseLong("4"),
+                Long.parseLong("13"),
+                Distance.calculateDistance(-20.0, 105.0, -20.0, 103.0),
+                "",
+                true
+        )); //13
+
+        SegmentManager.getInstance().createSegment(new CreateSegmentDTO(
+                Long.parseLong("13"),
+                Long.parseLong("14"),
+                Distance.calculateDistance(-20.0, 103.0, -20.0, 93.0),
+                "",
+                true
+        )); //14
+
+        SegmentManager.getInstance().createSegment(new CreateSegmentDTO(
+                Long.parseLong("14"),
+                Long.parseLong("15"),
+                Distance.calculateDistance(-20.0, 93.0, -20.0, 105.0),
+                "",
+                true
+        )); //15
+
+        SegmentManager.getInstance().createSegment(new CreateSegmentDTO(
+                Long.parseLong("15"),
+                Long.parseLong("16"),
+                Distance.calculateDistance(-20.0, 105.0, 10.0, 105.0),
+                "",
+                true
+        )); //16
+
+        SegmentManager.getInstance().createSegment(new CreateSegmentDTO(
+                Long.parseLong("16"),
+                Long.parseLong("17"),
+                Distance.calculateDistance(10.0, 105.0, 15.0, 105.0),
+                "",
+                true
+        )); //17
+
+        SegmentManager.getInstance().createSegment(new CreateSegmentDTO(
+                Long.parseLong("17"),
+                Long.parseLong("18"),
+                Distance.calculateDistance(15.0, 105.0, 18.0, 105.0),
+                "",
+                true
+        )); //18
+
+        SegmentManager.getInstance().createSegment(new CreateSegmentDTO(
+                Long.parseLong("18"),
+                Long.parseLong("19"),
+                Distance.calculateDistance(18.0, 105.0, 18.0, 95.0),
+                "",
+                true
+        )); //19
+
+        SegmentManager.getInstance().createSegment(new CreateSegmentDTO(
+                Long.parseLong("19"),
+                Long.parseLong("6"),
+                Distance.calculateDistance(18.0, 115.0, 20.0, 115.0),
+                "",
+                true
+        )); //20
+
+        SegmentManager.getInstance().createSegment(new CreateSegmentDTO(
+                Long.parseLong("18"),
+                Long.parseLong("20"),
+                Distance.calculateDistance(18.0, 105.0, 20.0, 105.0),
+                "",
+                true
+        )); //21
+
+        SegmentManager.getInstance().createSegment(new CreateSegmentDTO(
+                Long.parseLong("20"),
+                Long.parseLong("21"),
+                Distance.calculateDistance(20.0, 105.0, 22.0, 105.0),
+                "",
+                true
+        )); //22
+
+        SegmentManager.getInstance().createSegment(new CreateSegmentDTO(
+                Long.parseLong("21"),
+                Long.parseLong("22"),
+                Distance.calculateDistance(22.0, 105.0, 22.0, 115.0),
+                "",
+                true
+        )); //23
+
+        SegmentManager.getInstance().createSegment(new CreateSegmentDTO(
+                Long.parseLong("22"),
+                Long.parseLong("23"),
+                Distance.calculateDistance(22.0, 115.0, 22.0, 130.0),
+                "",
+                true
+        )); //24
+
+        SegmentManager.getInstance().createSegment(new CreateSegmentDTO(
+                Long.parseLong("2"),
+                Long.parseLong("1"),
+                Distance.calculateDistance(0.0, 0.0, 0.0, 100.0),
+                "",
+                true
+        )); //1
+
+        SegmentManager.getInstance().createSegment(new CreateSegmentDTO(
+                Long.parseLong("3"),
+                Long.parseLong("2"),
+                Distance.calculateDistance(0.0, 100.0, 0.0, 105.0),
+                "",
+                true
+        )); //2
+
+        SegmentManager.getInstance().createSegment(new CreateSegmentDTO(
+                Long.parseLong("4"),
+                Long.parseLong("3"),
+                Distance.calculateDistance(0.0, 105.0, -20.0, 105.0),
+                "",
+                true
+        )); //3
+
+        SegmentManager.getInstance().createSegment(new CreateSegmentDTO(
+                Long.parseLong("5"),
+                Long.parseLong("3"),
+                Distance.calculateDistance(0.0, 105.0, 20.0, 105.0),
+                "",
+                true
+        )); //4
+
+        SegmentManager.getInstance().createSegment(new CreateSegmentDTO(
+                Long.parseLong("6"),
+                Long.parseLong("5"),
+                Distance.calculateDistance(20.0, 105.0, 20.0, 115.0),
+                "",
+                true
+        )); //5
+
+        SegmentManager.getInstance().createSegment(new CreateSegmentDTO(
+                Long.parseLong("7"),
+                Long.parseLong("5"),
+                Distance.calculateDistance(20.0, 105.0, 22.0, 105.0),
+                "",
+                true
+        )); //6
+
+        SegmentManager.getInstance().createSegment(new CreateSegmentDTO(
+                Long.parseLong("8"),
+                Long.parseLong("7"),
+                Distance.calculateDistance(22.0, 105.0, 22.0, 125.0),
+                "",
+                true
+        )); //7
+
+        SegmentManager.getInstance().createSegment(new CreateSegmentDTO(
+                Long.parseLong("9"),
+                Long.parseLong("8"),
+                Distance.calculateDistance(22.0, 125.0, 22.0, 135.0),
+                "",
+                true
+        )); //8
+
+        SegmentManager.getInstance().createSegment(new CreateSegmentDTO(
+                Long.parseLong("10"),
+                Long.parseLong("9"),
+                Distance.calculateDistance(22.0, 135.0, 22.0, 140.0),
+                "",
+                true
+        )); //9
+
+        SegmentManager.getInstance().createSegment(new CreateSegmentDTO(
+                Long.parseLong("11"),
+                Long.parseLong("10"),
+                Distance.calculateDistance(22.0, 140.0, 20.0, 140.0),
+                "",
+                true
+        )); //10
+
+        SegmentManager.getInstance().createSegment(new CreateSegmentDTO(
+                Long.parseLong("12"),
+                Long.parseLong("11"),
+                Distance.calculateDistance(20.0, 140.0, -20.0, 140.0),
+                "",
+                true
+        )); //11
+
+        SegmentManager.getInstance().createSegment(new CreateSegmentDTO(
+                Long.parseLong("4"),
+                Long.parseLong("12"),
+                Distance.calculateDistance(-20.0, 140.0, -20.0, 105.0),
+                "",
+                true
+        )); //12
+
+        SegmentManager.getInstance().createSegment(new CreateSegmentDTO(
+                Long.parseLong("13"),
+                Long.parseLong("4"),
+                Distance.calculateDistance(-20.0, 105.0, -20.0, 103.0),
+                "",
+                true
+        )); //13
+
+        SegmentManager.getInstance().createSegment(new CreateSegmentDTO(
+                Long.parseLong("14"),
+                Long.parseLong("13"),
+                Distance.calculateDistance(-20.0, 103.0, -20.0, 93.0),
+                "",
+                true
+        )); //14
+
+        SegmentManager.getInstance().createSegment(new CreateSegmentDTO(
+                Long.parseLong("15"),
+                Long.parseLong("14"),
+                Distance.calculateDistance(-20.0, 93.0, -20.0, 105.0),
+                "",
+                true
+        )); //15
+
+        SegmentManager.getInstance().createSegment(new CreateSegmentDTO(
+                Long.parseLong("16"),
+                Long.parseLong("15"),
+                Distance.calculateDistance(-20.0, 105.0, 10.0, 105.0),
+                "",
+                true
+        )); //16
+
+        SegmentManager.getInstance().createSegment(new CreateSegmentDTO(
+                Long.parseLong("17"),
+                Long.parseLong("16"),
+                Distance.calculateDistance(10.0, 105.0, 15.0, 105.0),
+                "",
+                true
+        )); //17
+
+        SegmentManager.getInstance().createSegment(new CreateSegmentDTO(
+                Long.parseLong("18"),
+                Long.parseLong("17"),
+                Distance.calculateDistance(15.0, 105.0, 18.0, 105.0),
+                "",
+                true
+        )); //18
+
+        SegmentManager.getInstance().createSegment(new CreateSegmentDTO(
+                Long.parseLong("19"),
+                Long.parseLong("18"),
+                Distance.calculateDistance(18.0, 105.0, 18.0, 95.0),
+                "",
+                true
+        )); //19
+
+        SegmentManager.getInstance().createSegment(new CreateSegmentDTO(
+                Long.parseLong("6"),
+                Long.parseLong("19"),
+                Distance.calculateDistance(18.0, 115.0, 20.0, 115.0),
+                "",
+                true
+        )); //20
+
+        SegmentManager.getInstance().createSegment(new CreateSegmentDTO(
+                Long.parseLong("20"),
+                Long.parseLong("18"),
+                Distance.calculateDistance(18.0, 105.0, 20.0, 105.0),
+                "",
+                true
+        )); //21
+
+        SegmentManager.getInstance().createSegment(new CreateSegmentDTO(
+                Long.parseLong("21"),
+                Long.parseLong("20"),
+                Distance.calculateDistance(20.0, 105.0, 22.0, 105.0),
+                "",
+                true
+        )); //22
+
+        SegmentManager.getInstance().createSegment(new CreateSegmentDTO(
+                Long.parseLong("22"),
+                Long.parseLong("21"),
+                Distance.calculateDistance(22.0, 105.0, 22.0, 115.0),
+                "",
+                true
+        )); //23
+
+        SegmentManager.getInstance().createSegment(new CreateSegmentDTO(
+                Long.parseLong("23"),
+                Long.parseLong("22"),
+                Distance.calculateDistance(22.0, 115.0, 22.0, 130.0),
+                "",
+                true
+        )); //24
+
     }
 }

@@ -32,8 +32,10 @@ public class SocketConnection extends JDialog{
         OKButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                IpServer = IPField.getText().trim().isEmpty() ? null : IPField.getText();
-                Port = PortField.getText().trim().isEmpty() ? null : Integer.parseInt(PortField.getText());
+//                IpServer = IPField.getText().trim().isEmpty() ? null : IPField.getText();
+//                Port = PortField.getText().trim().isEmpty() ? null : Integer.parseInt(PortField.getText());
+                IpServer = "localhost";
+                Port = 2;
                 dispose();
             }
         });

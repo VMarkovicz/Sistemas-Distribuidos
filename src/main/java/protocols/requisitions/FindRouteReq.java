@@ -17,8 +17,8 @@ public class FindRouteReq extends Requisition<FindRouteReq.Payload> {
     }
 
     public record Payload(
-            @Positive Long pdi_inicial,
-            @Positive Long pdi_final
+            @NotNull @Positive Long pdi_inicial,
+            @NotNull @Positive Long pdi_final
             ) {
 
     }

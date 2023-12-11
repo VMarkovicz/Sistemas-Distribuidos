@@ -30,6 +30,7 @@ public class FindRouteInterface extends JDialog{
             public void actionPerformed(ActionEvent e) {
                 pdi_inicial = InitialPDIField.getText().trim().isEmpty() ? null : Long.parseLong(InitialPDIField.getText());
                 pdi_final = FinalPDIField.getText().trim().isEmpty() ? null : Long.parseLong(FinalPDIField.getText());
+                dispose();
             }
         });
         setVisible(true);

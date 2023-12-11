@@ -2,6 +2,7 @@ package server.dataTransferObject;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
+import lombok.Setter;
 import server.controller.PDIManager;
 import server.controller.SegmentManager;
 import server.dataTransferObject.Utils.Direction;

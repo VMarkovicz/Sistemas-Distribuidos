@@ -55,4 +55,10 @@ public class SegmentManager {
         var entity = repository.updateSegment(segment.id(), Segment.of(segment));
         return SegmentDTO.of(entity);
     }
+
+    public List<Segment> findNeighbors(NodeDTO currentNode) {
+        return repository.findNeighbors(currentNode)
+                .stream()
+                .toList();
+    }
 }

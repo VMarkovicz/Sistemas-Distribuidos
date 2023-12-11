@@ -5,11 +5,13 @@ import jakarta.persistence.RollbackException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import server.dataTransferObject.NodeDTO;
 import server.exception.BadReqException;
 import server.exception.NotFoundException;
 import server.exception.ServerReplyException;
 import server.models.Segment;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -80,8 +82,7 @@ public class SegmentRepository {
 
     public List<Segment> findAccessibleSegments() {
         try (Session session = sessionFactory.openSession()) {
-            return session.createQuery("from Segment where acessivel = :true", Segment.class)
-                    .setParameter("true", true)
+            return session.createQuery("from Segment where acessivel = true", Segment.class)
                     .getResultList();
         }
     }
@@ -108,4 +109,13 @@ public class SegmentRepository {
             return segment;
         }
     }
+
+    public List<Segment> findNeighbors(NodeDTO currentNode) {
+        try (Session session = sessionFactory.openSession()) {
+            return session.createQuery("from Segment where pdi_inicial = :pdi_final and acessivel = true", Segment.class)
+                    .setParameter("pdi_final", currentNode.getPdiFinal())
+                    .getResultList();
+        }
+    }
+
 }

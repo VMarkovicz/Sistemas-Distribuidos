@@ -1,11 +1,13 @@
 package server.controller;
 
 
+import server.dataTransferObject.NodeDTO;
 import server.dataTransferObject.RouteDTO;
 import server.dataTransferObject.Utils.Compass;
+import server.dataTransferObject.Utils.Dijkstra;
 import server.dataTransferObject.Utils.Direction;
+import server.exception.BadReqException;
 import server.exception.NotFoundException;
-import server.models.Segment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,45 +15,67 @@ import java.util.List;
 public class RouteManager {
     private static RouteManager instance = null;
 
-    public static List<RouteDTO> transformRoutes(List<Segment> segmentList) throws NotFoundException {
+    public static RouteManager getInstance() {
+        if (instance == null) {
+            instance = new RouteManager();
+        }
+        return instance;
+    }
+
+    public List<RouteDTO> calculateRoute(Long pdi_inicial, Long pdi_final) throws NotFoundException, BadReqException {
+        var pdi_inicial_Instance = PDIManager.getInstance().findPDI(pdi_inicial);
+        var pdi_final_Instance = PDIManager.getInstance().findPDI(pdi_final);
+        if(!pdi_inicial_Instance.acessivel()){
+            throw new BadReqException("Initial Pdi is ano accessible.");
+        }
+        if(!pdi_final_Instance.acessivel()){
+            throw new BadReqException("Final Pdi is ano accessible.");
+        }
+        return transformRoutes(Dijkstra.dijkstra(pdi_inicial, pdi_final));
+    }
+
+    private List<RouteDTO> transformRoutes(List<NodeDTO> nodeList) throws NotFoundException {
         List<RouteDTO> routeDTOList = new ArrayList<>();
 
-        Segment first = segmentList.get(0);
+        NodeDTO first = nodeList.get(0);
         Compass pastOrientation = calculateCompass(first);
-
-        for (int i = 0; i < segmentList.size(); i++){
+        for (int i = 0; i < nodeList.size(); i++){
             if (i == 0){
-                routeDTOList.add(getFirstCommand(segmentList.get(i)));
+                routeDTOList.add(getFirstCommand(nodeList.get(i)));
             }
             else {
-                routeDTOList.add(getCommand(segmentList.get(i), pastOrientation));
-                pastOrientation = calculateCompass(segmentList.get(i));
+                routeDTOList.add(getCommand(nodeList.get(i), pastOrientation));
+                pastOrientation = calculateCompass(nodeList.get(i));
             }
         }
         return routeDTOList;
     }
 
-    private static RouteDTO getFirstCommand(Segment segment) throws NotFoundException {
-        var pdi_inicial = PDIManager.getInstance().findPDI(segment.getPdi_inicial());
-        var pdi_final = PDIManager.getInstance().findPDI(segment.getPdi_final());
+    private RouteDTO getFirstCommand(NodeDTO node) throws NotFoundException {
+        var pdi_inicial = PDIManager.getInstance().findPDI(node.getPdiInicial());
+        var pdi_final = PDIManager.getInstance().findPDI(node.getPdiFinal());
         return new RouteDTO(pdi_inicial.nome(),
                             pdi_final.nome(),
-                            segment.getDistancia(),
-                            segment.getAviso(),
+                            node.getDistancia(),
+                            node.getAviso(),
                             Direction.FRONT);
     }
 
-    private static RouteDTO getCommand(Segment segment, Compass pastOrientation) throws NotFoundException {
-        var pdi_inicial = PDIManager.getInstance().findPDI(segment.getPdi_inicial());
-        var pdi_final = PDIManager.getInstance().findPDI(segment.getPdi_final());
+    private RouteDTO getCommand(NodeDTO node, Compass pastOrientation) throws NotFoundException {
+        var pdi_inicial = PDIManager.getInstance().findPDI(node.getPdiInicial());
+        var pdi_final = PDIManager.getInstance().findPDI(node.getPdiFinal());
+        var direcao = calculateDirection(calculateCompass(node), pastOrientation);
+        if (direcao == null){
+            direcao = Direction.FRONT;
+        }
         return new RouteDTO(pdi_inicial.nome(),
                             pdi_final.nome(),
-                            segment.getDistancia(),
-                            segment.getAviso(),
-                            calculateDirection(calculateCompass(segment), pastOrientation));
+                            node.getDistancia(),
+                            node.getAviso(),
+                            direcao);
     }
 
-    private static Direction calculateDirection(Compass currentOrientation, Compass pastOrientation) throws NotFoundException {
+    private Direction calculateDirection(Compass currentOrientation, Compass pastOrientation) throws NotFoundException {
         Compass[] orientations = {Compass.NORTH, Compass.EAST, Compass.SOUTH, Compass.WEST};
 
         // Find the indices of past and current orientations
@@ -80,9 +104,9 @@ public class RouteManager {
         return null;
     }
 
-    public static Compass calculateCompass(Segment segment) throws NotFoundException {
-        var pdi_inicial = PDIManager.getInstance().findPDI(segment.getPdi_inicial());
-        var pdi_final = PDIManager.getInstance().findPDI(segment.getPdi_final());
+    private Compass calculateCompass(NodeDTO node) throws NotFoundException {
+        var pdi_inicial = PDIManager.getInstance().findPDI(node.getPdiInicial());
+        var pdi_final = PDIManager.getInstance().findPDI(node.getPdiFinal());
 
         double dX = pdi_final.posicao().x() - pdi_inicial.posicao().x();
         double dY = pdi_final.posicao().y() - pdi_inicial.posicao().y();

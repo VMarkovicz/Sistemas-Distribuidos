@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import server.dataTransferObject.CreateSegmentDTO;
+import server.dataTransferObject.NodeDTO;
 import server.dataTransferObject.UpdateSegmentDTO;
 
 @Entity
