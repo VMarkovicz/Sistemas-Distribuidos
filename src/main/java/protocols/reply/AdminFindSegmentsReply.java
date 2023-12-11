@@ -13,4 +13,17 @@ public record AdminFindSegmentsReply(@NotNull @Valid AdminFindSegmentsReply.Payl
     }
     public record Payload(@SerializedName(value = "segmentos") List<@NotNull @Valid SegmentDTO> segmentList) {
     }
+
+    public String segmentListFormatted(List<SegmentDTO> list){
+        StringBuilder result = new StringBuilder();
+        for (SegmentDTO element : list) {
+            result.append("INITIAL_PDI: ").append(element.pdi_inicial()).append(" - ");
+            result.append("FINAL_PDI: ").append(element.pdi_final()).append(" - ");
+            result.append("Distance: ").append(element.distancia()).append(" - ");
+            result.append("Warning: ").append(element.aviso()).append(" - ");
+            result.append("Accessible: ").append(element.acessivel()).append("<br>");
+        }
+        result.append("</html>");
+        return result.toString();
+    }
 }

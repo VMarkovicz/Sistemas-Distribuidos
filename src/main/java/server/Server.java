@@ -45,7 +45,6 @@ public class Server extends Thread {
             while (true) {
                 try {
                     System.out.println("Waiting for Connection");
-                    //ServerInterface serverInterface = new ServerInterface(null);
                     serverInterface.setVisible(true);
                     new Server(serverSocket.accept());
 
@@ -91,8 +90,8 @@ public class Server extends Thread {
 
     public void run() {
         System.out.println ("New Communication Thread Started");
+        String myIP = clientSocket.getInetAddress().toString();
         serverInterface.setConnectedUsers();
-        System.out.println(serverInterface.connectedIPs.getConnectedIPs());
         serverInterface.repaint();
         try(clientSocket;
 
@@ -113,24 +112,22 @@ public class Server extends Thread {
                 System.out.println("Sent to "+ clientSocket.getInetAddress() +": " + jsonResponse);
                 out.println(jsonResponse);
                 if(!clientSocket.isConnected() || clientSocket.isClosed()) {
-                    serverInterface.connectedIPs.removeIP(clientSocket.getInetAddress().toString());
+                    serverInterface.connectedIPs.removeIP(myIP);
                     serverInterface.setConnectedUsers();
                     serverInterface.repaint();
                     break;
                 }
                 if (reply instanceof LogoutReply) {
                     serverInterface.connectedIPs.removeIP(clientSocket.getInetAddress().toString());
-                    serverInterface.connectedIPs.addIP(clientSocket.getInetAddress().toString());
                     serverInterface.setConnectedUsers();
                     serverInterface.repaint();
                     break;
                 }
                 if (reply instanceof LoginReply) {
-                    serverInterface.connectedIPs.addIP(clientSocket.getInetAddress().toString());
+                    serverInterface.connectedIPs.addIP(myIP);
                     serverInterface.setConnectedUsers();
                     serverInterface.repaint();
                 }
-                System.out.println(serverInterface.connectedIPs.getConnectedIPs());
             }
         }
         catch (IOException e) {
@@ -138,12 +135,19 @@ public class Server extends Thread {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
+        try {
+            serverInterface.connectedIPs.removeIP(myIP);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        serverInterface.setConnectedUsers();
+        serverInterface.repaint();
         assert(clientSocket.isClosed());
     }
 
     private static void createMap() throws ServerReplyException {
         PDIManager.getInstance().createPDI(new CreatePDIDTO("Portaria", new Posicao(0.0, 0.0), "", true)); //1
-        PDIManager.getInstance().createPDI(new CreatePDIDTO("Escada Portaria-Capela", new Posicao(0.0, 100.0), "", true)); //2
+        PDIManager.getInstance().createPDI(new CreatePDIDTO("Escada Baixo Portaria-Capela", new Posicao(0.0, 100.0), "", true)); //2
         PDIManager.getInstance().createPDI(new CreatePDIDTO("Capela", new Posicao(0.0, 105.0), "", true)); //3
         PDIManager.getInstance().createPDI(new CreatePDIDTO("Auditorio", new Posicao(-20.0, 105.0), "", true)); //4
         PDIManager.getInstance().createPDI(new CreatePDIDTO("Escada Inicio 1.o andar", new Posicao(20.0, 105.0), "", true)); //5
@@ -178,7 +182,7 @@ public class Server extends Thread {
                 Long.parseLong("2"),
                 Long.parseLong("3"),
                 Distance.calculateDistance(0.0, 100.0, 0.0, 105.0),
-                "",
+                "Subindo Escada",
                 true
         )); //2
 
@@ -202,7 +206,7 @@ public class Server extends Thread {
                 Long.parseLong("5"),
                 Long.parseLong("6"),
                 Distance.calculateDistance(20.0, 105.0, 20.0, 115.0),
-                "",
+                "Subindo Escada",
                 true
         )); //5
 
@@ -242,7 +246,7 @@ public class Server extends Thread {
                 Long.parseLong("10"),
                 Long.parseLong("11"),
                 Distance.calculateDistance(22.0, 140.0, 20.0, 140.0),
-                "",
+                "Subindo Escada",
                 true
         )); //10
 
@@ -274,7 +278,7 @@ public class Server extends Thread {
                 Long.parseLong("13"),
                 Long.parseLong("14"),
                 Distance.calculateDistance(-20.0, 103.0, -20.0, 93.0),
-                "",
+                "Subindo Escada",
                 true
         )); //14
 
@@ -282,7 +286,7 @@ public class Server extends Thread {
                 Long.parseLong("14"),
                 Long.parseLong("15"),
                 Distance.calculateDistance(-20.0, 93.0, -20.0, 105.0),
-                "",
+                "Subindo Escada",
                 true
         )); //15
 
@@ -319,10 +323,10 @@ public class Server extends Thread {
         )); //19
 
         SegmentManager.getInstance().createSegment(new CreateSegmentDTO(
-                Long.parseLong("19"),
                 Long.parseLong("6"),
+                Long.parseLong("19"),
                 Distance.calculateDistance(18.0, 115.0, 20.0, 115.0),
-                "",
+                "Subindo Escada",
                 true
         )); //20
 
@@ -370,7 +374,7 @@ public class Server extends Thread {
                 Long.parseLong("3"),
                 Long.parseLong("2"),
                 Distance.calculateDistance(0.0, 100.0, 0.0, 105.0),
-                "",
+                "Descendo Escada",
                 true
         )); //2
 
@@ -394,7 +398,7 @@ public class Server extends Thread {
                 Long.parseLong("6"),
                 Long.parseLong("5"),
                 Distance.calculateDistance(20.0, 105.0, 20.0, 115.0),
-                "",
+                "Descendo Escada",
                 true
         )); //5
 
@@ -434,7 +438,7 @@ public class Server extends Thread {
                 Long.parseLong("11"),
                 Long.parseLong("10"),
                 Distance.calculateDistance(22.0, 140.0, 20.0, 140.0),
-                "",
+                "Descendo Escada",
                 true
         )); //10
 
@@ -466,7 +470,7 @@ public class Server extends Thread {
                 Long.parseLong("14"),
                 Long.parseLong("13"),
                 Distance.calculateDistance(-20.0, 103.0, -20.0, 93.0),
-                "",
+                "Descendo Escada",
                 true
         )); //14
 
@@ -474,7 +478,7 @@ public class Server extends Thread {
                 Long.parseLong("15"),
                 Long.parseLong("14"),
                 Distance.calculateDistance(-20.0, 93.0, -20.0, 105.0),
-                "",
+                "Descendo Escada",
                 true
         )); //15
 
@@ -511,10 +515,10 @@ public class Server extends Thread {
         )); //19
 
         SegmentManager.getInstance().createSegment(new CreateSegmentDTO(
-                Long.parseLong("6"),
                 Long.parseLong("19"),
+                Long.parseLong("6"),
                 Distance.calculateDistance(18.0, 115.0, 20.0, 115.0),
-                "",
+                "Descendo Escada",
                 true
         )); //20
 
@@ -549,6 +553,5 @@ public class Server extends Thread {
                 "",
                 true
         )); //24
-
     }
 }

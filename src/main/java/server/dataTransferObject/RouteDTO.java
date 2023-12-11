@@ -2,9 +2,7 @@ package server.dataTransferObject;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
-import lombok.Setter;
 import server.controller.PDIManager;
-import server.controller.SegmentManager;
 import server.dataTransferObject.Utils.Direction;
 import server.exception.NotFoundException;
 import server.models.Segment;
@@ -12,9 +10,9 @@ import server.models.Segment;
 @Builder
 public record RouteDTO (
         @NotNull
-        String pdi_inicial,
+        String nome_inicial,
         @NotNull
-        String pdi_final,
+        String nome_final,
         @NotNull
         Double distancia,
 

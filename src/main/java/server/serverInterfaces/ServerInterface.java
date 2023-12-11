@@ -11,14 +11,12 @@ import java.util.List;
 public class ServerInterface extends JFrame{
     private JPanel ServerInterface;
     private JLabel UsersField;
-    private JLabel Label;
     public ConnectecIPs connectedIPs = new ConnectecIPs();
 
     public ServerInterface(){
 
         setContentPane(ServerInterface);
         setMinimumSize(new Dimension(500, 500));
-        Label.setSize(500, 75);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setVisible(true);

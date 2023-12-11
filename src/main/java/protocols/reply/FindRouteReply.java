@@ -14,4 +14,5 @@ public record FindRouteReply(@NotNull @Valid FindRouteReply.Payload payload) imp
 
     public record Payload(@SerializedName(value = "comandos") List<@NotNull @Valid RouteDTO> routeList) {
     }
+
 }

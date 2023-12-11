@@ -353,21 +353,31 @@ public class Client {
                 reply = GoogleJson.decode(json, AdminCreatePDIReply.class);
                 AdminCreatePDIReply objReply = (AdminCreatePDIReply) reply;
                 if(reply != null && reply.payload() != null){
-                    ReplyInterface ReplyInterface = new ReplyInterface(null, objReply.payload().toString());
+                    ReplyInterface ReplyInterface = new ReplyInterface(null, "<html>PDI Created" + "<br>ID:    " + objReply.payload().id()
+                                                                                                                    + "<br>Name:    " + objReply.payload().nome()
+                                                                                                                    + "<br>Position:    X=" + objReply.payload().posicao().x() + "  Y=" + objReply.payload().posicao().y()
+                                                                                                                    + "<br>Warning:    " + objReply.payload().aviso()
+                                                                                                                    + "<br>Accessible:    " + objReply.payload().acessivel()
+                                                                                                                    + "</html>");
                 }
             }
             if (objectClass == AdminFindPDIsReq.class) {
                 reply = GoogleJson.decode(json, AdminFindPDIsReply.class);
                 AdminFindPDIsReply objReply = (AdminFindPDIsReply) reply;
                 if(reply != null && reply.payload() != null){
-                    ReplyInterface ReplyInterface = new ReplyInterface(null, objReply.payload().toString());
+                    ReplyInterface ReplyInterface = new ReplyInterface(null, objReply.pdiListFormatted(objReply.payload().pdiList()));
                 }
             }
             if (objectClass == AdminUpdatePDIReq.class) {
                 reply = GoogleJson.decode(json, AdminUpdatePDIReply.class);
                 AdminUpdatePDIReply objReply = (AdminUpdatePDIReply) reply;
                 if(reply != null && reply.payload() != null){
-                    ReplyInterface ReplyInterface = new ReplyInterface(null, objReply.payload().toString());
+                    ReplyInterface ReplyInterface = new ReplyInterface(null, "<html>PDI updated" + "<br>ID:    " + objReply.payload().id()
+                                                                                                                + "<br>Name:    " + objReply.payload().nome()
+                                                                                                                + "<br>Position:    X=" + objReply.payload().posicao().x() + "  Y=" + objReply.payload().posicao().y()
+                                                                                                                + "<br>Warning:    " + objReply.payload().aviso()
+                                                                                                                + "<br>Accessible:    " + objReply.payload().acessivel()
+                                                                                                                + "</html>");
                 }
             }
             if (objectClass == AdminDeletePDIReq.class) {
@@ -381,21 +391,31 @@ public class Client {
                 reply = GoogleJson.decode(json, AdminCreateSegmentReply.class);
                 AdminCreateSegmentReply objReply = (AdminCreateSegmentReply) reply;
                 if(reply != null && reply.payload() != null){
-                    ReplyInterface ReplyInterface = new ReplyInterface(null, objReply.payload().toString());
+                    ReplyInterface ReplyInterface = new ReplyInterface(null, "<html>Segment created" + "<br>INITIAL_PDI:    " + objReply.payload().pdi_inicial()
+                            + "<br>FINAL_PDI:    " + objReply.payload().pdi_final()
+                            + "<br>Distance:    " + objReply.payload().distancia()
+                            + "<br>Warning:    " + objReply.payload().aviso()
+                            + "<br>Accessible:    " + objReply.payload().acessivel()
+                            + "</html>");
                 }
             }
             if (objectClass == AdminFindSegmentsReq.class) {
                 reply = GoogleJson.decode(json, AdminFindSegmentsReply.class);
                 AdminFindSegmentsReply objReply = (AdminFindSegmentsReply) reply;
                 if(reply != null && reply.payload() != null){
-                    ReplyInterface ReplyInterface = new ReplyInterface(null, objReply.payload().toString());
+                    ReplyInterface ReplyInterface = new ReplyInterface(null, objReply.segmentListFormatted(objReply.payload().segmentList()));
                 }
             }
             if (objectClass == AdminUpdateSegmentReq.class) {
                 reply = GoogleJson.decode(json, AdminUpdateSegmentReply.class);
                 AdminUpdateSegmentReply objReply = (AdminUpdateSegmentReply) reply;
                 if(reply != null && reply.payload() != null){
-                    ReplyInterface ReplyInterface = new ReplyInterface(null, objReply.payload().toString());
+                    ReplyInterface ReplyInterface = new ReplyInterface(null, "<html>Segment updated" + "<br>INITIAL_PDI:    " + objReply.payload().pdi_inicial()
+                            + "<br>FINAL_PDI:    " + objReply.payload().pdi_final()
+                            + "<br>Distance:    " + objReply.payload().distancia()
+                            + "<br>Warning:    " + objReply.payload().aviso()
+                            + "<br>Accessible:    " + objReply.payload().acessivel()
+                            + "</html>");
                 }
             }
             if (objectClass == AdminDeleteSegmentReq.class) {
@@ -409,7 +429,7 @@ public class Client {
                 reply = GoogleJson.decode(json, FindRouteReply.class);
                 FindRouteReply objReply = (FindRouteReply) reply;
                 if(reply != null && reply.payload() != null){
-                    ReplyInterface ReplyInterface = new ReplyInterface(null, objReply.payload().toString());
+                    RoutesInterface RoutesInterface = new RoutesInterface(null, objReply.payload().routeList());
                 }
             }
             if (reply == null || reply.payload() == null) {

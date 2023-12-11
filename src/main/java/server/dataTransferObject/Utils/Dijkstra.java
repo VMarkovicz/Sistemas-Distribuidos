@@ -66,7 +66,7 @@ public class Dijkstra {
             path.add(0, node);
             node = node.getFather();
         }
-
+        path.get(path.size()-1).setAviso("Destination");
         return path;
     }
 }

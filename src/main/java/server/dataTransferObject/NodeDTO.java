@@ -21,7 +21,7 @@ public class NodeDTO {
 
     private final Double distancia;
 
-    private final String aviso;
+    private String aviso;
 
     private  NodeDTO father;
 
