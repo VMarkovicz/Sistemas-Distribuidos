@@ -18,7 +18,7 @@ public record RouteDTO (
 
         String aviso,
 
-        Direction direcao
+        String direcao
 
 ) {
         public static RouteDTO of(Segment segmentEntity) throws NotFoundException {

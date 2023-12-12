@@ -58,7 +58,7 @@ public class RouteManager {
                             pdi_final.nome(),
                             node.getDistancia(),
                             node.getAviso(),
-                            Direction.FRONT);
+                            Direction.FRONT.getDescription());
     }
 
     private RouteDTO getCommand(NodeDTO node, Compass pastOrientation) throws NotFoundException {
@@ -72,7 +72,7 @@ public class RouteManager {
                             pdi_final.nome(),
                             node.getDistancia(),
                             node.getAviso(),
-                            direcao);
+                            direcao.getDescription());
     }
 
     private Direction calculateDirection(Compass currentOrientation, Compass pastOrientation) throws NotFoundException {

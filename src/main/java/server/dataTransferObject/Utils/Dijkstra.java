@@ -63,6 +63,7 @@ public class Dijkstra {
         List<NodeDTO> path = new ArrayList<>();
 
         while (node.getFather() != null){
+            node.setDistancia(node.getDistancia()-node.getFather().getDistancia());
             path.add(0, node);
             node = node.getFather();
         }

@@ -19,7 +19,7 @@ public class NodeDTO {
     @NotNull
     private final Long pdiFinal;
 
-    private final Double distancia;
+    private Double distancia;
 
     private String aviso;
 
