@@ -12,4 +12,17 @@ public record AdminFindUsersReply(@NotNull @Valid Payload payload) implements Re
     }
     public record Payload(@SerializedName(value = "usuarios") List<@NotNull @Valid UserDTO> userList) {
     }
+
+    public String userListFormatted(List<UserDTO> list){
+        StringBuilder result = new StringBuilder();
+        result.append("<html>");
+        for (UserDTO element : list) {
+            result.append("Name: ").append(element.nome()).append(" - ");
+            result.append("Email: ").append(element.email()).append(" - ");
+            result.append("Type: ").append(element.tipo()).append(" - ");
+            result.append("ID: ").append(element.registro()).append("<br>");
+        }
+        result.append("</html>");
+        return result.toString();
+    }
 }

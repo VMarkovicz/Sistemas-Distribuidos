@@ -16,9 +16,9 @@ public class AdminFindUserReq extends Requisition<AdminFindUserReq.Payload>{
 
     public AdminFindUserReq(String token, @Optional Long registro) {
         super(new Header(RequisitionOp.ADMIN_BUSCAR_USUARIO, token));
-        if(registro == null){
-            registro = JWTManager.getRegistro(token);
-        }
+//        if(registro == null){
+//            registro = JWTManager.getRegistro(token);
+//        }
         payload = new AdminFindUserReq.Payload(registro);
     }
     public record Payload(

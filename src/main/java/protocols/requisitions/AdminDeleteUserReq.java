@@ -12,11 +12,9 @@ import java.util.Objects;
 public class AdminDeleteUserReq extends Requisition<AdminDeleteUserReq.Payload> {
     @NotNull @Valid private final Payload payload;
 
-    public AdminDeleteUserReq(String token, String registro) {
+    public AdminDeleteUserReq(String token, Long registro) {
         super(new Header(RequisitionOp.ADMIN_DELETAR_USUARIO, token));
-        Long registerToPayload = Objects.equals(registro, "MY_ID") ? JWTManager.getRegistro(token) : Long.parseLong(registro);
-
-        payload = new Payload(registerToPayload);
+        payload = new Payload(registro);
     }
 
     public record Payload(

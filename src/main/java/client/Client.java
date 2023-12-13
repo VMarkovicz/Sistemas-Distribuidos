@@ -1,5 +1,9 @@
 package client;
 
+import client.clientInterfaces.OperationSelect;
+import client.clientInterfaces.ReplyInterface;
+import client.clientInterfaces.SocketConnection;
+import client.clientInterfaces.operationInterfaces.*;
 import com.google.gson.JsonSyntaxException;
 import gson.Error;
 import gson.GoogleJson;
@@ -7,6 +11,7 @@ import gson.ValidationGson;
 import protocols.Optional;
 import protocols.reply.*;
 import protocols.requisitions.*;
+
 import java.io.*;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -15,11 +20,10 @@ import java.net.*;
 
 public class Client {
     public static void main(String[] args) throws IOException {
-        BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
-        System.out.print("IP: ");
-        String IPServer = stdIn.readLine();
-        System.out.print("Port: ");
-        int port = Integer.parseInt(stdIn.readLine());
+
+        SocketConnection SocketConnInterface = new SocketConnection(null);
+        String IPServer = SocketConnInterface.getIpServer();
+        int port = SocketConnInterface.getPort();
 
         try (Socket echoSocket = new Socket(IPServer, port);
              PrintWriter out = new PrintWriter(echoSocket.getOutputStream(), true);
@@ -83,44 +87,107 @@ public class Client {
         String method;
         while (true) {
             System.out.print("Enter Operation: ");
-            method = stdin.readLine();
+            OperationSelect operationSelectInterface = new OperationSelect(null);
+//            if(token != null){
+//                operationSelectInterface.Information.setText(JWTManager.getRegistro(token).toString());
+//            }
+            method = operationSelectInterface.getOperation();
             if (method == null) {
                 throw new IOException();
             }
-
+            System.out.println(method);
             switch (method) {
                 case RequisitionOp.LOGIN -> {
-                    return makeReq(stdin, token, LoginReq.class);
+                    LoginInterface LoginInterface = new LoginInterface(null);
+                    return new LoginReq(LoginInterface.getEmail(), LoginInterface.getPassword());
                 }
                 case RequisitionOp.LOGOUT -> {
-                    return makeReq(stdin, token, LogoutReq.class);
+                    return new LogoutReq(token);
                 }
                 case RequisitionOp.ADMIN_CADASTRAR_USUARIO -> {
-                    return makeReq(stdin, token, AdminCreateUserReq.class);
+                    AdminCreateUserInterface AdminCreateUserInterface = new AdminCreateUserInterface(null);
+                    return new AdminCreateUserReq(token, AdminCreateUserInterface.getName(), AdminCreateUserInterface.getEmail(), AdminCreateUserInterface.getPassword());
                 }
                 case RequisitionOp.CADASTRAR_USUARIO -> {
-                    return makeReq(stdin, token, CreateUserReq.class);
+                    CreateUserInterface CreateUserInterface = new CreateUserInterface(null);
+                    return new CreateUserReq(token, CreateUserInterface.getName(), CreateUserInterface.getEmail(), CreateUserInterface.getPassword());
                 }
                 case RequisitionOp.ADMIN_DELETAR_USUARIO -> {
-                    return makeReq(stdin, token, AdminDeleteUserReq.class);
+                    AdminDeleteUserInterface AdminDeleteUserInterface = new AdminDeleteUserInterface(null, token);
+                    return new AdminDeleteUserReq(token, AdminDeleteUserInterface.getIdToDelete());
                 }
                 case RequisitionOp.DELETAR_USUARIO -> {
-                    return makeReq(stdin, token, DeleteUserReq.class);
+                    DeleteUserInterface DeleteUserInterface = new DeleteUserInterface(null);
+                    return new DeleteUserReq(token, DeleteUserInterface.getEmail(), DeleteUserInterface.getPassword());
                 }
                 case RequisitionOp.BUSCAR_USUARIO -> {
-                    return makeReq(stdin, token, FindUserReq.class);
+                    return new FindUserReq(token);
                 }
                 case RequisitionOp.ADMIN_BUSCAR_USUARIOS -> {
-                    return makeReq(stdin, token, AdminFindUsersReq.class);
+                    return new AdminFindUsersReq(token);
                 }
                 case RequisitionOp.ADMIN_BUSCAR_USUARIO -> {
-                    return makeReq(stdin, token, AdminFindUserReq.class);
+                    AdminFindUserInterface AdminFindUserInterface = new AdminFindUserInterface(null);
+                    return new AdminFindUserReq(token, AdminFindUserInterface.getIdToFind());
                 }
                 case RequisitionOp.ADMIN_ATUALIZAR_USUARIO -> {
-                    return makeReq(stdin, token, AdminUpdateUserReq.class);
+                    AdminUpdateUserInterface AdminUpdateUserInterface = new AdminUpdateUserInterface(null, token);
+                    return new AdminUpdateUserReq(token,    AdminUpdateUserInterface.getIdToUpdate(),
+                                                            AdminUpdateUserInterface.getName(),
+                                                            AdminUpdateUserInterface.getEmail(),
+                                                            AdminUpdateUserInterface.getPassword(),
+                                                            AdminUpdateUserInterface.getIsAdmin());
                 }
                 case RequisitionOp.ATUALIZAR_USUARIO -> {
-                    return makeReq(stdin, token, UpdateUserReq.class);
+                    UpdateUserInterface UpdateUserInterface = new UpdateUserInterface(null);
+                    return new UpdateUserReq(token, UpdateUserInterface.getName(), UpdateUserInterface.getEmail(), UpdateUserInterface.getPassword());
+                }
+                case RequisitionOp.CADASTRAR_PDI -> {
+                    AdminCreatePDIInterface createPDIInterface = new AdminCreatePDIInterface(null);
+                    return new AdminCreatePDIReq(token, createPDIInterface.getName(),
+                                                        createPDIInterface.getPosX(),
+                                                        createPDIInterface.getPosY(),
+                                                        createPDIInterface.getWarning(),
+                                                        createPDIInterface.getAccessible());
+                }
+                case RequisitionOp.BUSCAR_PDIS -> {
+                    return new AdminFindPDIsReq(token);
+                }
+                case RequisitionOp.ATUALIZAR_PDI -> {
+                    AdminUpdatePDIInterface updatePDIInterface = new AdminUpdatePDIInterface(null);
+                    return new AdminUpdatePDIReq(token, updatePDIInterface.getId(),
+                                                        updatePDIInterface.getName(),
+                                                        updatePDIInterface.getWarning(),
+                                                        updatePDIInterface.getAccessible());
+                }
+                case RequisitionOp.DELETAR_PDI -> {
+                    AdminDeletePDIInterface deletePDIInterface = new AdminDeletePDIInterface(null);
+                    return new AdminDeletePDIReq(token, deletePDIInterface.getPdiToDelete());
+                }
+                case RequisitionOp.CADASTRAR_SEGMENTO -> {
+                    AdminCreateSegmentInterface createSegmentInterface = new AdminCreateSegmentInterface(null);
+                    return new AdminCreateSegmentReq(token, createSegmentInterface.getPdi_inicial(),
+                                                            createSegmentInterface.getPdi_final(),
+                                                            createSegmentInterface.getWarning(),
+                                                            createSegmentInterface.getAccessible());
+                }
+                case RequisitionOp.BUSCAR_SEGMENTOS -> {
+                    return new AdminFindSegmentsReq(token);
+                }
+                case RequisitionOp.ATUALIZAR_SEGMENTO -> {
+                    AdminUpdateSegmentInterface updateSegmentInterface = new AdminUpdateSegmentInterface(null);
+                    return new AdminUpdateSegmentReq(token, updateSegmentInterface.getPdi_inicial(),
+                                                            updateSegmentInterface.getPdi_final(),
+                                                            updateSegmentInterface.getWarning(),
+                                                            updateSegmentInterface.getAccessible());
+                }
+                case RequisitionOp.DELETAR_SEGMENTO -> {
+                    AdminDeleteSegmentInterface deleteSegmentInterface = new AdminDeleteSegmentInterface(null);
+                    return new AdminDeleteSegmentReq(token, deleteSegmentInterface.getPdi_inicial(), deleteSegmentInterface.getPdi_final());
+                }
+                case RequisitionOp.BUSCAR_ROTA -> {
+                    FindRouteInterface findRouteInterface = new FindRouteInterface(null);
+                    return new FindRouteReq(token, findRouteInterface.getPdi_inicial(), findRouteInterface.getPdi_final());
                 }
             }
         }
@@ -159,6 +226,8 @@ public class Client {
                     constructorArguments[i] = null;
                 } else if (parameters[i].getType() == Long.class) {
                     constructorArguments[i] = Long.parseLong(line);
+                } else if (parameters[i].getType() == Double.class) {
+                    constructorArguments[i] = Double.parseDouble(line);
                 } else if (parameters[i].getType() == Boolean.class) {
 
                     constructorArguments[i] = Boolean.parseBoolean(line);
@@ -183,39 +252,190 @@ public class Client {
             Class<?> objectClass = requisition.getClass();
             if (objectClass == LoginReq.class) {
                 reply = GoogleJson.decode(json, LoginReply.class);
+                if(reply != null && reply.payload() != null){
+                    ReplyInterface ReplyInterface = new ReplyInterface(null, "Logged in with success.");
+                }
             }
             if (objectClass == LogoutReq.class) {
                 reply = GoogleJson.decode(json, LogoutReply.class);
+                if(reply != null && reply.payload() != null) {
+                    ReplyInterface ReplyInterface = new ReplyInterface(null, "Disconnected with success.");
+                }
             }
             if (objectClass == AdminCreateUserReq.class) {
                 reply = GoogleJson.decode(json, AdminCreateUserReply.class);
+                AdminCreateUserReply objReply = (AdminCreateUserReply) reply;
+                if(reply != null && reply.payload() != null){
+                    ReplyInterface ReplyInterface = new ReplyInterface(null, "<html>User Created:" + "<br>Name:    " + objReply.payload().nome()
+                                                                                                                + "<br>Email:    " + objReply.payload().email()
+                                                                                                                + "<br>ID:    " + objReply.payload().registro()
+                                                                                                                + "<br>Type:    " + objReply.payload().tipo()
+                                                                                                                + "</html>");
+                }
             }
             if (objectClass == CreateUserReq.class) {
                 reply = GoogleJson.decode(json, CreateUserReply.class);
+                CreateUserReply objReply = (CreateUserReply) reply;
+                if(reply != null && reply.payload() != null){
+                    ReplyInterface ReplyInterface = new ReplyInterface(null, "<html>User Created:" + "<br>Name:    " + objReply.payload().nome()
+                                                                                                                    + "<br>Email:    " + objReply.payload().email()
+                                                                                                                    + "<br>ID:    " + objReply.payload().registro()
+                                                                                                                    + "<br>Type:    " + objReply.payload().tipo()
+                                                                                                                    + "</html>");
+                }
             }
             if (objectClass == AdminDeleteUserReq.class) {
                 reply = GoogleJson.decode(json, AdminDeleteUserReply.class);
+                AdminDeleteUserReply objReply = (AdminDeleteUserReply) reply;
+                if(reply != null && reply.payload() != null){
+                    ReplyInterface ReplyInterface = new ReplyInterface(null, objReply.payload().mensagem());
+                }
             }
             if (objectClass == DeleteUserReq.class) {
                 reply = GoogleJson.decode(json, DeleteUserReply.class);
+                DeleteUserReply objReply = (DeleteUserReply) reply;
+                if(reply != null && reply.payload() != null){
+                    ReplyInterface ReplyInterface = new ReplyInterface(null, objReply.payload().mensagem());
+                }
             }
             if (objectClass == FindUserReq.class) {
                 reply = GoogleJson.decode(json, FindUserReply.class);
+                FindUserReply objReply = (FindUserReply) reply;
+                if(reply != null && reply.payload() != null){
+                    ReplyInterface ReplyInterface = new ReplyInterface(null, "<html>User" + "<br>Name:    " + objReply.payload().nome()
+                                                                                                            + "<br>Email:    " + objReply.payload().email()
+                                                                                                            + "<br>ID:    " + objReply.payload().registro()
+                                                                                                            + "<br>Type:    " + objReply.payload().tipo()
+                                                                                                            + "</html>");
+                }
             }
             if (objectClass == AdminFindUsersReq.class) {
                 reply = GoogleJson.decode(json, AdminFindUsersReply.class);
+                AdminFindUsersReply objReply = (AdminFindUsersReply) reply;
+                if(reply != null && reply.payload() != null){
+                    ReplyInterface ReplyInterface = new ReplyInterface(null, objReply.userListFormatted(objReply.payload().userList()));
+                }
             }
             if (objectClass == AdminFindUserReq.class) {
                 reply = GoogleJson.decode(json, FindUserReply.class);
+                FindUserReply objReply = (FindUserReply) reply;
+                if(reply != null && reply.payload() != null){
+                    ReplyInterface ReplyInterface = new ReplyInterface(null, "<html>User" + "<br>Name:    " + objReply.payload().nome()
+                                                                                                            + "<br>Email:    " + objReply.payload().email()
+                                                                                                            + "<br>ID:    " + objReply.payload().registro()
+                                                                                                            + "<br>Type:    " + objReply.payload().tipo()
+                                                                                                            + "</html>");
+                }
             }
             if (objectClass == AdminUpdateUserReq.class) {
                 reply = GoogleJson.decode(json, AdminUpdateUserReply.class);
+                AdminUpdateUserReply objReply = (AdminUpdateUserReply) reply;
+                if(reply != null && reply.payload() != null){
+                    ReplyInterface ReplyInterface = new ReplyInterface(null, "<html>User updated" + "<br>Name:    " + objReply.payload().nome()
+                                                                                                                    + "<br>Email:    " + objReply.payload().email()
+                                                                                                                    + "<br>ID:    " + objReply.payload().registro()
+                                                                                                                    + "<br>Type:    " + objReply.payload().tipo()
+                                                                                                                    + "</html>");
+                }
             }
             if (objectClass == UpdateUserReq.class) {
                 reply = GoogleJson.decode(json, UpdateUserReply.class);
+                UpdateUserReply objReply = (UpdateUserReply) reply;
+                if(reply != null && reply.payload() != null){
+                    ReplyInterface ReplyInterface = new ReplyInterface(null, "<html>User updated" + "<br>Name:    " + objReply.payload().nome()
+                                                                                                                    + "<br>Email:    " + objReply.payload().email()
+                                                                                                                    + "<br>ID:    " + objReply.payload().registro()
+                                                                                                                    + "<br>Type:    " + objReply.payload().tipo()
+                                                                                                                    + "</html>");
+                }
+            }
+            if (objectClass == AdminCreatePDIReq.class) {
+                reply = GoogleJson.decode(json, AdminCreatePDIReply.class);
+                AdminCreatePDIReply objReply = (AdminCreatePDIReply) reply;
+                if(reply != null && reply.payload() != null){
+                    ReplyInterface ReplyInterface = new ReplyInterface(null, "<html>PDI Created" + "<br>ID:    " + objReply.payload().id()
+                                                                                                                    + "<br>Name:    " + objReply.payload().nome()
+                                                                                                                    + "<br>Position:    X=" + objReply.payload().posicao().x() + "  Y=" + objReply.payload().posicao().y()
+                                                                                                                    + "<br>Warning:    " + objReply.payload().aviso()
+                                                                                                                    + "<br>Accessible:    " + objReply.payload().acessivel()
+                                                                                                                    + "</html>");
+                }
+            }
+            if (objectClass == AdminFindPDIsReq.class) {
+                reply = GoogleJson.decode(json, AdminFindPDIsReply.class);
+                AdminFindPDIsReply objReply = (AdminFindPDIsReply) reply;
+                if(reply != null && reply.payload() != null){
+                    ReplyInterface ReplyInterface = new ReplyInterface(null, objReply.pdiListFormatted(objReply.payload().pdiList()));
+                }
+            }
+            if (objectClass == AdminUpdatePDIReq.class) {
+                reply = GoogleJson.decode(json, AdminUpdatePDIReply.class);
+                AdminUpdatePDIReply objReply = (AdminUpdatePDIReply) reply;
+                if(reply != null && reply.payload() != null){
+                    ReplyInterface ReplyInterface = new ReplyInterface(null, "<html>PDI updated" + "<br>ID:    " + objReply.payload().id()
+                                                                                                                + "<br>Name:    " + objReply.payload().nome()
+                                                                                                                + "<br>Position:    X=" + objReply.payload().posicao().x() + "  Y=" + objReply.payload().posicao().y()
+                                                                                                                + "<br>Warning:    " + objReply.payload().aviso()
+                                                                                                                + "<br>Accessible:    " + objReply.payload().acessivel()
+                                                                                                                + "</html>");
+                }
+            }
+            if (objectClass == AdminDeletePDIReq.class) {
+                reply = GoogleJson.decode(json, AdminDeletePDIReply.class);
+                AdminDeletePDIReply objReply = (AdminDeletePDIReply) reply;
+                if(reply != null && reply.payload() != null){
+                    ReplyInterface ReplyInterface = new ReplyInterface(null, objReply.payload().mensagem());
+                }
+            }
+            if (objectClass == AdminCreateSegmentReq.class) {
+                reply = GoogleJson.decode(json, AdminCreateSegmentReply.class);
+                AdminCreateSegmentReply objReply = (AdminCreateSegmentReply) reply;
+                if(reply != null && reply.payload() != null){
+                    ReplyInterface ReplyInterface = new ReplyInterface(null, "<html>Segment created" + "<br>INITIAL_PDI:    " + objReply.payload().pdi_inicial()
+                            + "<br>FINAL_PDI:    " + objReply.payload().pdi_final()
+                            + "<br>Distance:    " + objReply.payload().distancia()
+                            + "<br>Warning:    " + objReply.payload().aviso()
+                            + "<br>Accessible:    " + objReply.payload().acessivel()
+                            + "</html>");
+                }
+            }
+            if (objectClass == AdminFindSegmentsReq.class) {
+                reply = GoogleJson.decode(json, AdminFindSegmentsReply.class);
+                AdminFindSegmentsReply objReply = (AdminFindSegmentsReply) reply;
+                if(reply != null && reply.payload() != null){
+                    ReplyInterface ReplyInterface = new ReplyInterface(null, objReply.segmentListFormatted(objReply.payload().segmentList()));
+                }
+            }
+            if (objectClass == AdminUpdateSegmentReq.class) {
+                reply = GoogleJson.decode(json, AdminUpdateSegmentReply.class);
+                AdminUpdateSegmentReply objReply = (AdminUpdateSegmentReply) reply;
+                if(reply != null && reply.payload() != null){
+                    ReplyInterface ReplyInterface = new ReplyInterface(null, "<html>Segment updated" + "<br>INITIAL_PDI:    " + objReply.payload().pdi_inicial()
+                            + "<br>FINAL_PDI:    " + objReply.payload().pdi_final()
+                            + "<br>Distance:    " + objReply.payload().distancia()
+                            + "<br>Warning:    " + objReply.payload().aviso()
+                            + "<br>Accessible:    " + objReply.payload().acessivel()
+                            + "</html>");
+                }
+            }
+            if (objectClass == AdminDeleteSegmentReq.class) {
+                reply = GoogleJson.decode(json, AdminDeleteSegmentReply.class);
+                AdminDeleteSegmentReply objReply = (AdminDeleteSegmentReply) reply;
+                if(reply != null && reply.payload() != null){
+                    ReplyInterface ReplyInterface = new ReplyInterface(null, objReply.payload().mensagem());
+                }
+            }
+            if (objectClass == FindRouteReq.class) {
+                reply = GoogleJson.decode(json, FindRouteReply.class);
+                FindRouteReply objReply = (FindRouteReply) reply;
+                if(reply != null && reply.payload() != null){
+                    RoutesInterface RoutesInterface = new RoutesInterface(null, objReply.payload().routeList());
+                }
             }
             if (reply == null || reply.payload() == null) {
                 reply = GoogleJson.decode(json, ErrorReply.class);
+                ErrorReply objReply = (ErrorReply) reply;
+                ReplyInterface ReplyInterface = new ReplyInterface(null, "<html>Error <br>" + objReply.payload().mensagem() + "</html>");
             }
             ValidationGson.validate(reply);
             return reply;
