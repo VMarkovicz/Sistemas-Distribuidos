@@ -142,6 +142,7 @@ public class Server extends Thread {
         }
         serverInterface.setConnectedUsers();
         serverInterface.repaint();
+
         assert(clientSocket.isClosed());
     }
 
@@ -262,7 +263,7 @@ public class Server extends Thread {
                 Long.parseLong("12"),
                 Long.parseLong("4"),
                 Distance.calculateDistance(-20.0, 140.0, -20.0, 105.0),
-                "",
+                "Mantenha-se a Esquerda",
                 true
         )); //12
 
@@ -318,7 +319,7 @@ public class Server extends Thread {
                 Long.parseLong("18"),
                 Long.parseLong("19"),
                 Distance.calculateDistance(18.0, 105.0, 18.0, 95.0),
-                "",
+                "Descendo Escada",
                 true
         )); //19
 
@@ -326,7 +327,7 @@ public class Server extends Thread {
                 Long.parseLong("6"),
                 Long.parseLong("19"),
                 Distance.calculateDistance(18.0, 115.0, 20.0, 115.0),
-                "Subindo Escada",
+                "",
                 true
         )); //20
 
@@ -454,7 +455,7 @@ public class Server extends Thread {
                 Long.parseLong("4"),
                 Long.parseLong("12"),
                 Distance.calculateDistance(-20.0, 140.0, -20.0, 105.0),
-                "",
+                "Mantenha-se a Direita",
                 true
         )); //12
 
@@ -510,7 +511,7 @@ public class Server extends Thread {
                 Long.parseLong("19"),
                 Long.parseLong("18"),
                 Distance.calculateDistance(18.0, 105.0, 18.0, 95.0),
-                "",
+                "Subindo Escada",
                 true
         )); //19
 
@@ -518,7 +519,7 @@ public class Server extends Thread {
                 Long.parseLong("19"),
                 Long.parseLong("6"),
                 Distance.calculateDistance(18.0, 115.0, 20.0, 115.0),
-                "Descendo Escada",
+                "",
                 true
         )); //20
 

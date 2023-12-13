@@ -16,6 +16,7 @@ public record AdminFindSegmentsReply(@NotNull @Valid AdminFindSegmentsReply.Payl
 
     public String segmentListFormatted(List<SegmentDTO> list){
         StringBuilder result = new StringBuilder();
+        result.append("<html>");
         for (SegmentDTO element : list) {
             result.append("INITIAL_PDI: ").append(element.pdi_inicial()).append(" - ");
             result.append("FINAL_PDI: ").append(element.pdi_final()).append(" - ");

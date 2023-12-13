@@ -11,6 +11,7 @@ import server.exception.NotFoundException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class RouteManager {
     private static RouteManager instance = null;
@@ -25,11 +26,14 @@ public class RouteManager {
     public List<RouteDTO> calculateRoute(Long pdi_inicial, Long pdi_final) throws NotFoundException, BadReqException {
         var pdi_inicial_Instance = PDIManager.getInstance().findPDI(pdi_inicial);
         var pdi_final_Instance = PDIManager.getInstance().findPDI(pdi_final);
+        if(Objects.equals(pdi_inicial, pdi_final)){
+            throw new BadReqException("You are at your destination");
+        }
         if(!pdi_inicial_Instance.acessivel()){
-            throw new BadReqException("Initial Pdi is ano accessible.");
+            throw new BadReqException("Initial Pdi is not accessible.");
         }
         if(!pdi_final_Instance.acessivel()){
-            throw new BadReqException("Final Pdi is ano accessible.");
+            throw new BadReqException("Final Pdi is not accessible.");
         }
         return transformRoutes(Dijkstra.dijkstra(pdi_inicial, pdi_final));
     }
@@ -64,15 +68,11 @@ public class RouteManager {
     private RouteDTO getCommand(NodeDTO node, Compass pastOrientation) throws NotFoundException {
         var pdi_inicial = PDIManager.getInstance().findPDI(node.getPdiInicial());
         var pdi_final = PDIManager.getInstance().findPDI(node.getPdiFinal());
-        var direcao = calculateDirection(calculateCompass(node), pastOrientation);
-        if (direcao == null){
-            direcao = Direction.FRONT;
-        }
         return new RouteDTO(pdi_inicial.nome(),
                             pdi_final.nome(),
                             node.getDistancia(),
                             node.getAviso(),
-                            direcao.getDescription());
+                            calculateDirection(calculateCompass(node), pastOrientation).getDescription());
     }
 
     private Direction calculateDirection(Compass currentOrientation, Compass pastOrientation) throws NotFoundException {
@@ -101,7 +101,7 @@ public class RouteManager {
         } else if (turn == 2) {
             return Direction.FRONT;
         }
-        return null;
+        return Direction.FRONT;
     }
 
     private Compass calculateCompass(NodeDTO node) throws NotFoundException {

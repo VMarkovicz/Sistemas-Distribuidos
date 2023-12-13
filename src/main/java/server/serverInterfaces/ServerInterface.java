@@ -1,17 +1,12 @@
 package server.serverInterfaces;
 
-import server.dataTransferObject.UserDTO;
-
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.List;
 
 public class ServerInterface extends JFrame{
     private JPanel ServerInterface;
     private JLabel UsersField;
-    public ConnectecIPs connectedIPs = new ConnectecIPs();
+    public ConnectedIPs connectedIPs = new ConnectedIPs();
 
     public ServerInterface(){
 

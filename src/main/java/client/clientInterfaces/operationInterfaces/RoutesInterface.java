@@ -44,7 +44,7 @@ public class RoutesInterface extends JDialog{
         int i = 1;
         for (RouteDTO element : list) {
             id.append(i).append("<br>");
-            initial_pdi.append(element.nome_inicial()).append("<br>");
+            initial_pdi.append(element.nome_inicio()).append("<br>");
             final_pdi.append(element.nome_final()).append("<br>");
             distance.append(element.distancia()).append("<br>");
             warning.append(element.aviso()).append("<br>");

@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Semaphore;
 @Getter
-public final class ConnectecIPs {
+public final class ConnectedIPs {
     private final List<String> connectedIPs = new ArrayList<>();
     static Semaphore semaphore = new Semaphore(1);
     public void addIP(String ip) throws InterruptedException {

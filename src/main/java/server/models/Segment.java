@@ -11,7 +11,7 @@ import server.dataTransferObject.NodeDTO;
 import server.dataTransferObject.UpdateSegmentDTO;
 
 @Entity
-@Table(name = "segments", uniqueConstraints = {         @UniqueConstraint(columnNames = {"nome_inicial", "nome_final"})})
+@Table(name = "segments", uniqueConstraints = {         @UniqueConstraint(columnNames = {"nome_inicio", "nome_final"})})
 @Getter
 @Setter
 @ToString

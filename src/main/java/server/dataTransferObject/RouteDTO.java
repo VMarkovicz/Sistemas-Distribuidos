@@ -3,14 +3,13 @@ package server.dataTransferObject;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import server.controller.PDIManager;
-import server.dataTransferObject.Utils.Direction;
 import server.exception.NotFoundException;
 import server.models.Segment;
 
 @Builder
 public record RouteDTO (
         @NotNull
-        String nome_inicial,
+        String nome_inicio,
         @NotNull
         String nome_final,
         @NotNull

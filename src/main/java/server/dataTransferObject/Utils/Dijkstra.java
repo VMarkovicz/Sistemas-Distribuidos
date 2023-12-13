@@ -3,6 +3,7 @@ package server.dataTransferObject.Utils;
 
 import server.controller.SegmentManager;
 import server.dataTransferObject.NodeDTO;
+import server.exception.BadReqException;
 import server.models.Segment;
 
 import java.util.ArrayList;
@@ -11,7 +12,7 @@ import java.util.Objects;
 
 public class Dijkstra {
     private static NodeDTO startNode;
-    public static List<NodeDTO> dijkstra(Long pdi_inicial, Long pdi_final){
+    public static List<NodeDTO> dijkstra(Long pdi_inicial, Long pdi_final) throws BadReqException {
 
         startNode = new NodeDTO(pdi_inicial, pdi_inicial, 0.0, null, null, new ArrayList<>());
         NodeDTO currentNode = startNode;
@@ -25,10 +26,44 @@ public class Dijkstra {
                 }
             }
             currentNode.setNeighbors(neighbors);
-            currentNode = findShortestLeaf(startNode, pdi_final);
+            NodeDTO shortestLeaf = findShortestLeaf(startNode, pdi_final);
+            if(currentNode == shortestLeaf){
+                pruningTree(shortestLeaf, startNode);
+                currentNode = findShortestLeaf(startNode, pdi_final);
+                if(currentNode == startNode){
+                    throw new BadReqException("Could not find any Path.");
+                }
+            }
+            else {
+                currentNode = shortestLeaf;
+            }
+            if(levelOfNode(currentNode) > 25){
+                throw new BadReqException("Could not find any Path.");
+            }
         }
 
         return buildPath(currentNode);
+    }
+
+    private static int levelOfNode(NodeDTO currentNode) {
+        int level = 0;
+        while(currentNode.getFather() != null){
+            level++;
+            currentNode = currentNode.getFather();
+        }
+        return level;
+    }
+
+    private static void pruningTree(NodeDTO currentNode, NodeDTO startNode) {
+        NodeDTO node;
+        while(currentNode.getFather() != null){
+            node = currentNode;
+            currentNode = currentNode.getFather();
+            if(currentNode.getNeighbors().size() > 1 || currentNode == startNode){
+                currentNode.getNeighbors().remove(node);
+                break;
+            }
+        }
     }
 
     private static List<NodeDTO> findLeafs(NodeDTO currentNode){
